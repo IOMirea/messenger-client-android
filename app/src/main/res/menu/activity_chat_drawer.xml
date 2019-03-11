@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_secure"
+            android:icon="@drawable/ic_lock_black_24dp"
+            android:title="Создать защищённый чат" />
+        <item
+            android:id="@+id/nav_group"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="Создать групповой чат" />
+        <item
+            android:id="@+id/nav_tools"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Настройки" />
+    </group>
+
+    <item android:title="Помощь">
+        <menu>
+            <item
+                android:id="@+id/nav_bug"
+                android:icon="@drawable/ic_bug_report_black_24dp"
+                android:title="Отправить отчёт об ошибке" />
+            <item
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="Информация" />
+        </menu>
+    </item>
+
+</menu>
