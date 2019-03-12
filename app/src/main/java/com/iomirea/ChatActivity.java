@@ -1,5 +1,6 @@
 package com.iomirea;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,19 +16,19 @@ import android.view.MenuItem;
 
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private int counter;
+    private int counter; //временный счетчик, позже удалить
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        counter=3;
+        counter=1;
 
         final RecyclerView chatlist = findViewById(R.id.mainlist);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         chatlist.setLayoutManager(linearLayoutManager);
 
-        final ChatAdapter chatAdapter = new ChatAdapter(counter);
+        final ChatAdapter chatAdapter = new ChatAdapter(counter, getApplicationContext());
         chatlist.setAdapter(chatAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -37,12 +38,7 @@ public class ChatActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//                ChatAdapter chatAdapter = new ChatAdapter();
-//                chatlist.setAdapter(chatAdapter);
-
-
+//
             }
         });
 
@@ -73,15 +69,17 @@ public class ChatActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_secure) {
-            // Handle the secure chat action
+            // Создание секретноого чата
         } else if (id == R.id.nav_group) {
-            // Handle the group chat action
+            // Создание беседы
         } else if (id == R.id.nav_tools) {
-            // Handle the settings action
+            // Открываем настройки
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_bug) {
-
+            // Окошко с возможностью отправить баг
         } else if (id == R.id.nav_info) {
-
+            // Окошко с полезной информацией
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

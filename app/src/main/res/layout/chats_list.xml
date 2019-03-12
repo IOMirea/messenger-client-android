@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:visibility="visible"
+    android:background="#FFFFFF"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -23,12 +24,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:layout_marginRight="10dp"
                 android:text="@string/time" />
         </LinearLayout>
 
@@ -57,8 +59,8 @@
 
         <TextView
             android:id="@+id/last_message"
-            android:layout_width="298dp"
-            android:layout_height="73dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:text="@string/last_message"
             android:textSize="15dp" />
