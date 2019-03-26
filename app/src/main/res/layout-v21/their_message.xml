@@ -14,6 +14,7 @@
         android:id="@+id/message_body"
         android:background="@drawable/their_message"
         android:padding="10dp"
+        android:elevation="2dp"
         android:textSize="18dp"
         android:layout_alignParentLeft="true"
         android:text="@string/their_message"

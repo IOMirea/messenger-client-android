@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_border">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/bug_text"
+            android:gravity="top"
+            android:textAlignment="gravity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="4096"
+            android:ems="100"
+            android:lines="10"
+            android:inputType="textCapSentences|textMultiLine"
+             />
+
+        <CheckBox
+            android:id="@+id/bug_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Прикрепить информацию
+об устройстве к сообщению" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bug_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Зыкрыть"
+                android:textColor="@color/colorAccent"
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp"
+                android:background="@null"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/bug_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingTop="20dp"
+                android:paddingRight="10dp"
+                android:layout_weight="1"
+                android:text="Отправить"
+                android:textColor="@color/colorAccent"
+                android:background="@null"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
