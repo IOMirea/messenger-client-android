@@ -1,70 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/popup_border">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/bug_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:ems="100"
+        android:gravity="top"
+        android:inputType="textCapSentences|textMultiLine"
+        android:lines="10"
+        android:maxLength="4096"
+        android:textAlignment="gravity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/bug_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/bugreport_attach_device_info_checkbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bug_text" />
 
-        <EditText
-            android:id="@+id/bug_text"
-            android:gravity="top"
-            android:textAlignment="gravity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="4096"
-            android:ems="100"
-            android:lines="10"
-            android:inputType="textCapSentences|textMultiLine"
-             />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bug_checkbox">
 
-        <CheckBox
-            android:id="@+id/bug_checkbox"
+        <Button
+            android:id="@+id/bug_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Прикрепить информацию
-об устройстве к сообщению" />
+            android:background="@null"
+            android:paddingTop="20dp"
+            android:text="@string/bugreport_close_button"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bug_send"
+            app:layout_constraintStart_toEndOf="@+id/bug_close"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/bug_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="Зыкрыть"
-                android:textColor="@color/colorAccent"
-                android:paddingTop="20dp"
-                android:paddingLeft="10dp"
-                android:background="@null"/>
+        <Button
+            android:id="@+id/bug_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingTop="20dp"
+            android:text="@string/bugreport_send_button"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+    </android.support.constraint.ConstraintLayout>
 
-            <Button
-                android:id="@+id/bug_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:paddingTop="20dp"
-                android:paddingRight="10dp"
-                android:layout_weight="1"
-                android:text="Отправить"
-                android:textColor="@color/colorAccent"
-                android:background="@null"/>
-        </LinearLayout>
 
-    </LinearLayout>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

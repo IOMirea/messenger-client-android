@@ -19,6 +19,11 @@
     <string name="title_activity_test">Test</string>
     <string name="title_activity_settings">Настройки</string>
 
+    <!-- Strings related to bug report screen -->
+    <string name="bugreport_attach_device_info_checkbox">Attach device info to report</string>
+    <string name="bugreport_send_button">Send</string>
+    <string name="bugreport_close_button">Close</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
