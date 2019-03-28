@@ -2,6 +2,6 @@ package com.iomirea;
 
 import android.view.View;
 
-public interface ItemCLickListener {
+public interface ItemClickListener {
     void onItemClick(View view, int position);
 }
