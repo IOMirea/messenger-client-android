@@ -2,6 +2,9 @@ package com.iomirea;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -194,6 +197,19 @@ public class ChatActivity extends AppCompatActivity
 
     private String getDeviceInfo() {
         // TODO: сгенерировать информацию об устройстве
-        return "device info ...";
+        String version = "unfound";
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return "app version: " + version +
+                "\n OS version: " + android.os.Build.VERSION.RELEASE +
+                "\n API version: " + android.os.Build.VERSION.SDK_INT +
+                "\n Device name: " + android.os.Build.DEVICE +
+                "\n Model: " + android.os.Build.MODEL +
+                "\n Product name: " + android.os.Build.PRODUCT;
     }
 }
