@@ -1,26 +1,28 @@
 package com.iomirea;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +30,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,10 +51,10 @@ public class ChatActivity extends AppCompatActivity
         final ChatAdapter chatAdapter = new ChatAdapter(counter, getApplicationContext());
         chatlist.setAdapter(chatAdapter);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,19 +62,19 @@ public class ChatActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -98,27 +103,76 @@ public class ChatActivity extends AppCompatActivity
 
             int width = LinearLayout.LayoutParams.WRAP_CONTENT;
             int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            boolean focusable = true;
-            final PopupWindow bug_report = new PopupWindow(popupView, width, height, focusable);
+            final PopupWindow bug_report = new PopupWindow(popupView, width, height, true);
 
             bug_report.showAtLocation(findViewById(R.id.avatar), Gravity.CENTER, 0, 0);
-            final EditText bug_text = popupView.findViewById(R.id.bug_text);
-            Button bug_close = (Button) popupView.findViewById(R.id.bug_close);
+
+            Button bug_close = popupView.findViewById(R.id.bug_close);
             Button bug_send = popupView.findViewById(R.id.bug_send);
-            CheckBox bug_check = popupView.findViewById(R.id.bug_checkbox);
+
+            final CheckBox bug_checkbox = popupView.findViewById(R.id.bug_checkbox);
+            final EditText bug_body = popupView.findViewById(R.id.bug_text);
+
+            // TODO: ограничить минимальную длину сообщения пользователя
 
             bug_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     bug_report.dismiss();
-                    //Здесь будет отправка на сервер
                 }
             });
 
             bug_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bug_report.dismiss();
+                    final Context context = getApplicationContext();
+
+                    RequestQueue queue = Volley.newRequestQueue(context);
+                    StringRequest reportRequest = new StringRequest(Request.Method.POST,
+                            "https://iomirea.ml/api/v0/bugreports",
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(
+                                            context,
+                                            getResources().getString(
+                                                    R.string.bugreport_delivery_success
+                                            ),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                    bug_report.dismiss();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse == null) {
+                                error.printStackTrace();
+                            } else {
+                                Toast.makeText(context, getResources().getString(
+                                        R.string.bugreport_delivery_fail,
+                                        error.networkResponse.statusCode
+                                        ), Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        }
+                    }) {
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/x-www-form-urlencoded; charset=UTF-8";
+                        }
+
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("body", bug_body.getText().toString());
+                            params.put("device_info", bug_checkbox.isChecked() ? getDeviceInfo() : "");
+                            params.put("automatic", "1");
+
+                            return params;
+                        }
+                    };
+
+                    queue.add(reportRequest);
                 }
             });
 
@@ -133,8 +187,13 @@ public class ChatActivity extends AppCompatActivity
             // Окошко с полезной информацией
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private String getDeviceInfo() {
+        // TODO: сгенерировать информацию об устройстве
+        return "device info ...";
     }
 }

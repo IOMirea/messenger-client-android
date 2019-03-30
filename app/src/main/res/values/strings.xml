@@ -24,6 +24,9 @@
     <string name="bugreport_send_button">Send</string>
     <string name="bugreport_close_button">Close</string>
 
+    <string name="bugreport_delivery_success">Bugreport delivered</string>
+    <string name="bugreport_delivery_fail">Bugreport delivery failed (%1$d)</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
