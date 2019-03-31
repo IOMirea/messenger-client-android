@@ -169,7 +169,7 @@ public class ChatActivity extends AppCompatActivity
                             Map<String, String> params = new HashMap<>();
                             params.put("body", bug_body.getText().toString());
                             params.put("device_info", bug_checkbox.isChecked() ? getDeviceInfo() : "");
-                            params.put("automatic", "1");
+                            params.put("automatic", "0");
 
                             return params;
                         }
@@ -196,7 +196,6 @@ public class ChatActivity extends AppCompatActivity
     }
 
     private String getDeviceInfo() {
-        // TODO: сгенерировать информацию об устройстве
         String version = "unfound";
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
