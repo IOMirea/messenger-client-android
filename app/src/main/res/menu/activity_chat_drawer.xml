@@ -7,27 +7,27 @@
         <item
             android:id="@+id/nav_secure"
             android:icon="@drawable/ic_lock_black_24dp"
-            android:title="Создать защищённый чат" />
+            android:title="@string/bar_secure" />
         <item
             android:id="@+id/nav_group"
             android:icon="@drawable/ic_group_black_24dp"
-            android:title="Создать групповой чат" />
+            android:title="@string/bar_group" />
         <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Настройки" />
+            android:title="@string/Settings" />
     </group>
 
-    <item android:title="Помощь">
+    <item android:title="@string/bar_help">
         <menu>
             <item
                 android:id="@+id/nav_bug"
                 android:icon="@drawable/ic_bug_report_black_24dp"
-                android:title="Отправить отчёт об ошибке" />
+                android:title="@string/bar_bug" />
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/ic_info_black_24dp"
-                android:title="Информация" />
+                android:title="@string/bar_info" />
         </menu>
     </item>
 

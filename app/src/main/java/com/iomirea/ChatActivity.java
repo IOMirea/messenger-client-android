@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,13 +38,13 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private int counter; //временный счетчик, позже удалить
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        counter=1;
+        //временный счетчик, позже удалить
+        int counter = 1;
 
         final RecyclerView chatlist = findViewById(R.id.mainlist);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

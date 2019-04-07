@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
-            android:hint="Введите сообщение"
+            android:hint="@string/message_assist"
             android:inputType="textCapSentences"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"

@@ -1,23 +1,21 @@
 <resources>
     <string name="app_name">IOMirea</string>
-    <string name="title_activity_chat">Сообщения</string>
+    <string name="title_activity_chat">Chats</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">IOMirea</string>
     <string name="nav_header_subtitle">add address later</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="username">Администратор</string>
+    <string name="username">Administrator</string>
     <string name="time">6:29</string>
-    <string name="their_message">А теперь уже два предложения, причём второе длиннее, чтобы
-        проверить, как работает масштабирование</string>
-    <string name="last_message">Первое сообщение</string>
-    <string name="title_activity_message">Чат с Администратор</string>
+    <string name="last_message">No messages yet</string>
+    <string name="title_activity_message">Chat with Administrator</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_test">Test</string>
-    <string name="title_activity_settings">Настройки</string>
+    <string name="Settings">Settings</string>
 
     <!-- Strings related to bug report screen -->
     <string name="bugreport_attach_device_info_checkbox">Attach device info to report</string>
@@ -30,7 +28,7 @@
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general">Интерфейс</string>
+    <string name="pref_header_general">Interface</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
@@ -53,7 +51,7 @@
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Данные и адреса</string>
+    <string name="pref_header_data_sync">Data and addresses</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
@@ -91,13 +89,28 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications"
-        color="@color/colorAccent">Уведомления
+        color="@color/colorAccent">Notifications
     </string>
 
-    <string name="pref_title_new_message_notifications">Уведомления о новых сообщениях</string>
+    <string name="pref_title_new_message_notifications">Message notifications</string>
 
-    <string name="pref_title_ringtone">Звук уведомлений</string>
-    <string name="pref_ringtone_silent">Беззвучный</string>
+    <string name="pref_title_ringtone">Notification sound</string>
+    <string name="pref_ringtone_silent">Silent</string>
 
-    <string name="pref_title_vibrate">Вибрация</string>
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="bar_secure">Create secure chat</string>
+    <string name="bar_group">Create group chat</string>
+    <string name="bar_help">Help</string>
+    <string name="bar_bug">Report a bug</string>
+    <string name="bar_info">Info</string>
+
+    <string name="message_assist">Enter message here...</string>
+    <string name="their_message">The crab people are attacking</string>
+    <string name="their_user">Other user</string>
+
+
+
+
+
 </resources>
