@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
     <string name="username">Administrator</string>
     <string name="time">6:29</string>
-    <string name="last_message">No messages yet</string>
+    <string name="last_message">У вас еще нет сообщений</string>
     <string name="title_activity_message">Chat with Administrator</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
