@@ -27,14 +27,14 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.iomirea.http.VolleyController;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -129,7 +129,6 @@ public class ChatActivity extends AppCompatActivity
                 public void onClick(View v) {
                     final Context context = getApplicationContext();
 
-                    RequestQueue queue = Volley.newRequestQueue(context);
                     StringRequest reportRequest = new StringRequest(Request.Method.POST,
                             "https://iomirea.ml/api/v0/bugreports",
                             new Response.Listener<String>() {
@@ -174,7 +173,7 @@ public class ChatActivity extends AppCompatActivity
                         }
                     };
 
-                    queue.add(reportRequest);
+                    VolleyController.getInstance(getApplicationContext()).addToRequestQueue(reportRequest);
                 }
             });
 
