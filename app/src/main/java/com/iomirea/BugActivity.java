@@ -41,7 +41,7 @@ public class BugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Context context = getApplicationContext();
-
+                if(bugEditText.getText().toString().trim().length() >= 5){
                 StringRequest reportRequest = new StringRequest(Request.Method.POST,
                         "https://iomirea.ml/api/v0/bugreports",
                         new Response.Listener<String>() {
@@ -54,6 +54,7 @@ public class BugActivity extends AppCompatActivity {
                                         ),
                                         Toast.LENGTH_SHORT
                                 ).show();
+                                doubleBackToExitPressedOnce = true;
                                 onBackPressed();
                             }
                         }, new Response.ErrorListener() {
@@ -87,6 +88,16 @@ public class BugActivity extends AppCompatActivity {
                 };
 
                 VolleyController.getInstance(getApplicationContext()).addToRequestQueue(reportRequest);
+            }
+            else {
+                    Toast.makeText(
+                            context,
+                            getResources().getString(
+                                    R.string.bugreport_mintext
+                            ),
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
             }
         });
 

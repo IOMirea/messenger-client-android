@@ -110,6 +110,7 @@
     <string name="their_user">Other user</string>
     <string name="bug_name">Отчет об ошибке</string>
     <string name="bugreport_hint">Введите текст...</string>
+    <string name="bugreport_mintext">Введите больше символов</string>
 
 
 </resources>
