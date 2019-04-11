@@ -42,10 +42,8 @@ public class ChatActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         //временный счетчик, позже удалить
         int counter = 1;
-
         final RecyclerView chatlist = findViewById(R.id.mainlist);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         chatlist.setLayoutManager(linearLayoutManager);
@@ -88,6 +86,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_secure) {
@@ -99,91 +98,10 @@ public class ChatActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_bug) {
-            LayoutInflater inflater = (LayoutInflater)
-                    getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.bug_report, null);
-
-            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            final PopupWindow bug_report = new PopupWindow(popupView, width, height, true);
-
-            bug_report.showAtLocation(findViewById(R.id.avatar), Gravity.CENTER, 0, 0);
-
-            Button bug_close = popupView.findViewById(R.id.bug_close);
-            Button bug_send = popupView.findViewById(R.id.bug_send);
-
-            final CheckBox bug_checkbox = popupView.findViewById(R.id.bug_checkbox);
-            final EditText bug_body = popupView.findViewById(R.id.bug_text);
-
-            // TODO: ограничить минимальную длину сообщения пользователя
-
-            bug_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bug_report.dismiss();
-                }
-            });
-
-            bug_send.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Context context = getApplicationContext();
-
-                    StringRequest reportRequest = new StringRequest(Request.Method.POST,
-                            "https://iomirea.ml/api/v0/bugreports",
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Toast.makeText(
-                                            context,
-                                            getResources().getString(
-                                                    R.string.bugreport_delivery_success
-                                            ),
-                                            Toast.LENGTH_SHORT
-                                    ).show();
-                                    bug_report.dismiss();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (error.networkResponse == null) {
-                                error.printStackTrace();
-                            } else {
-                                Toast.makeText(context, getResources().getString(
-                                        R.string.bugreport_delivery_fail,
-                                        error.networkResponse.statusCode
-                                        ), Toast.LENGTH_SHORT
-                                ).show();
-                            }
-                        }
-                    }) {
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/x-www-form-urlencoded; charset=UTF-8";
-                        }
-
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("body", bug_body.getText().toString());
-                            params.put("device_info", bug_checkbox.isChecked() ? getDeviceInfo() : "");
-                            params.put("automatic", "0");
-
-                            return params;
-                        }
-                    };
-
-                    VolleyController.getInstance(getApplicationContext()).addToRequestQueue(reportRequest);
-                }
-            });
-
-            popupView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    bug_report.dismiss();
-                    return true;
-                }
-            });
+            getIntent();
+            Intent bug_intent = new Intent(getApplicationContext(),BugActivity.class);
+            bug_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(bug_intent);
         } else if (id == R.id.nav_info) {
             // Окошко с полезной информацией
         }
@@ -191,22 +109,5 @@ public class ChatActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private String getDeviceInfo() {
-        String version = "unfound";
-        try {
-            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return "app version: " + version +
-                "\n OS version: " + android.os.Build.VERSION.RELEASE +
-                "\n API version: " + android.os.Build.VERSION.SDK_INT +
-                "\n Device name: " + android.os.Build.DEVICE +
-                "\n Model: " + android.os.Build.MODEL +
-                "\n Product name: " + android.os.Build.PRODUCT;
     }
 }

@@ -18,10 +18,11 @@
     <string name="Settings">Settings</string>
 
     <!-- Strings related to bug report screen -->
+    <string name="bug_name">Bugreport</string>
     <string name="bugreport_attach_device_info_checkbox">Attach device info to report</string>
     <string name="bugreport_send_button">Send</string>
     <string name="bugreport_close_button">Close</string>
-
+    <string name="bugreport_hint">Input text here...</string>
     <string name="bugreport_delivery_success">Bugreport delivered</string>
     <string name="bugreport_delivery_fail">Bugreport delivery failed (%1$d)</string>
 
@@ -88,8 +89,7 @@
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications"
-        color="@color/colorAccent">Notifications
+    <string name="pref_header_notifications" color="@color/colorAccent">Notifications
     </string>
 
     <string name="pref_title_new_message_notifications">Message notifications</string>
@@ -108,9 +108,6 @@
     <string name="message_assist">Enter message here...</string>
     <string name="their_message">The crab people are attacking</string>
     <string name="their_user">Other user</string>
-
-
-
 
 
 </resources>

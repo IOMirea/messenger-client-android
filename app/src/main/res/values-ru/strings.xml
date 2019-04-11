@@ -108,9 +108,8 @@
     <string name="message_assist">Введите текст...</string>
     <string name="their_message">The crab people are attacking</string>
     <string name="their_user">Other user</string>
-
-
-
+    <string name="bug_name">Отчет об ошибке</string>
+    <string name="bugreport_hint">Введите текст...</string>
 
 
 </resources>
