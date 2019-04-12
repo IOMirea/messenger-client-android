@@ -35,11 +35,13 @@ public class MessageActivity extends AppCompatActivity {
 
         final EditText mtext = findViewById((R.id.message_textfield));
         ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
+        //отправка сообщения в функции ниже
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mtext.getText().length()!=0) {
-                    tempMessageAdapter.add(new TempMessage(mtext.getText().toString(),true));
+                String sending = message_trimmer(mtext.getText().toString());
+                if (sending.length()!=0) {
+                    tempMessageAdapter.add(new TempMessage(sending,true));
                 }
                 mtext.setText("");
             }
@@ -47,8 +49,9 @@ public class MessageActivity extends AppCompatActivity {
         send_message.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (mtext.getText().length()!=0) {
-                    tempMessageAdapter.add(new TempMessage(mtext.getText().toString(),false));
+                String sending = message_trimmer(mtext.getText().toString());
+                if (sending.length()!=0) {
+                    tempMessageAdapter.add(new TempMessage(sending,false));
                 }
                 mtext.setText("");
                 return false;
@@ -57,5 +60,9 @@ public class MessageActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+    protected String message_trimmer(String source) {
+        source = source.trim();
+        source = source.replaceAll("\\s+", " ");
+        return source;
+    }
 }

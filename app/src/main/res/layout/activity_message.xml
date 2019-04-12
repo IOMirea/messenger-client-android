@@ -26,6 +26,7 @@
         layout="@layout/content_message" />
 
     <LinearLayout
+        android:id="@+id/message_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
