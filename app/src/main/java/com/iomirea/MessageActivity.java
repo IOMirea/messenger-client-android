@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -56,6 +57,15 @@ public class MessageActivity extends AppCompatActivity {
                     tempMessageAdapter.add(new TempMessage(sending,false));
                 }
                 mtext.setText("");
+                return false;
+            }
+        });
+
+        messagesView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+                //открытие меню
+                tempMessageAdapter.add(new TempMessage("Долгое нажатие работает",false));
                 return false;
             }
         });
