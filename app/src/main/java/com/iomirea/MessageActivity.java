@@ -1,20 +1,28 @@
 package com.iomirea;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.view.MenuItem;
 
 
+public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class MessageActivity extends AppCompatActivity {
+    LinearLayout shareLinearLayout, uploadLinearLayout, copyLinearLayout;
+    BottomSheetDialog bottomSheetDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ListView messagesView = (ListView) findViewById(R.id.messages_view);
@@ -35,6 +43,9 @@ public class MessageActivity extends AppCompatActivity {
         tempMessageAdapter.add(message);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        createBottomSheetDialog();
 
         final EditText mtext = findViewById((R.id.message_textfield));
         ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
@@ -65,16 +76,54 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
                 //открытие меню
-                tempMessageAdapter.add(new TempMessage("Долгое нажатие работает",false));
+
+
+                bottomSheetDialog.show();
+
                 return false;
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
     protected String message_trimmer(String source) {
         source = source.trim();
         source = source.replaceAll("\\s+", " ");
         return source;
+    }
+
+
+
+    private void createBottomSheetDialog() {
+        if (bottomSheetDialog == null) {
+            View view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet, null);
+            shareLinearLayout = view.findViewById(R.id.shareLinearLayout);
+            uploadLinearLayout = view.findViewById(R.id.uploadLinearLayout);
+            copyLinearLayout = view.findViewById(R.id.copyLinearLayout);
+
+            shareLinearLayout.setOnClickListener((View.OnClickListener) this);
+            uploadLinearLayout.setOnClickListener((View.OnClickListener) this);
+            copyLinearLayout.setOnClickListener((View.OnClickListener) this);
+
+            bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(view);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.shareLinearLayout:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.uploadLinearLayout:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.copyLinearLayout:
+                bottomSheetDialog.dismiss();
+                break;
+
+        }
     }
 }
