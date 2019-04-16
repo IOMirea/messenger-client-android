@@ -105,6 +105,7 @@
     <string name="bar_help">Help</string>
     <string name="bar_bug">Report a bug</string>
     <string name="bar_info">Info</string>
+    <string name="bar_logout">Log out</string>
 
     <string name="message_assist">Enter message here...</string>
     <string name="their_message">The crab people are attacking</string>

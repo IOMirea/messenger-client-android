@@ -2,6 +2,7 @@ package com.iomirea;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -104,6 +105,12 @@ public class ChatActivity extends AppCompatActivity
             this.startActivity(bug_intent);
         } else if (id == R.id.nav_info) {
             // Окошко с полезной информацией
+        } else if (id == R.id.nav_out) {
+            SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+            preferences.edit().remove("token").commit();
+            Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(logout_intent);
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
