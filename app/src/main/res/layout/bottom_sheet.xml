@@ -9,60 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/shareLinearLayout"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
-        >
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_share_black_24dp"
-            android:tint="@color/colorAccent"
-            android:layout_margin="8dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Share"
-            android:layout_gravity="center_vertical"
-            android:padding="8dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/uploadLinearLayout"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
-        >
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_cloud_upload_black_24dp"
-            android:tint="@color/colorAccent"
-            android:layout_margin="8dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload"
-            android:layout_gravity="center_vertical"
-            android:padding="8dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:id="@+id/copyLinearLayout"
         android:background="?android:attr/selectableItemBackground"
         android:padding="8dp"
@@ -79,7 +25,61 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Copy"
+            android:text="@string/bottom_copy"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/deleteLinearLayout"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:tint="@color/colorAccent"
+            android:layout_margin="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bottom_delete"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/editLinearLayout"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="8dp"
+        >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_edit_white_24dp"
+            android:tint="@color/colorAccent"
+            android:layout_margin="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bottom_edit"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
             />

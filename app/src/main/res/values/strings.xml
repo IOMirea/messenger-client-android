@@ -111,5 +111,11 @@
     <string name="their_message">The crab people are attacking</string>
     <string name="their_user">Other user</string>
 
+    <string name="bottom_copy">Copy</string>
+    <string name="bottom_delete">Delete</string>
+    <string name="bottom_edit">Edit</string>
+
+    <string name="dark_theme">Dark theme</string>
+
 
 </resources>

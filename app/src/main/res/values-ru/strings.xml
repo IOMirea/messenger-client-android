@@ -113,5 +113,11 @@
     <string name="bugreport_mintext">Введите больше символов</string>
     <string name="bar_logout">Выйти</string>
 
+    <string name="bottom_copy">Копировать</string>
+    <string name="bottom_delete">Удалить</string>
+    <string name="bottom_edit">Редактировать</string>
+
+    <string name="dark_theme">Темная тема</string>
+
 
 </resources>

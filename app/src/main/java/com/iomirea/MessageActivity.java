@@ -1,5 +1,6 @@
 package com.iomirea;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.view.MenuItem;
+import android.os.Vibrator;
 
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    LinearLayout shareLinearLayout, uploadLinearLayout, copyLinearLayout;
+    LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
     BottomSheetDialog bottomSheetDialog;
 
 
@@ -44,8 +45,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         createBottomSheetDialog();
+        //if(bottomSheetDialog == null){}
 
         final EditText mtext = findViewById((R.id.message_textfield));
         ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
@@ -77,7 +78,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
                 //открытие меню
 
-
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(27);
                 bottomSheetDialog.show();
 
                 return false;
@@ -98,13 +100,13 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private void createBottomSheetDialog() {
         if (bottomSheetDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet, null);
-            shareLinearLayout = view.findViewById(R.id.shareLinearLayout);
-            uploadLinearLayout = view.findViewById(R.id.uploadLinearLayout);
             copyLinearLayout = view.findViewById(R.id.copyLinearLayout);
+            deleteLinearLayout = view.findViewById(R.id.deleteLinearLayout);
+            editLinearLayout = view.findViewById(R.id.editLinearLayout);
 
-            shareLinearLayout.setOnClickListener((View.OnClickListener) this);
-            uploadLinearLayout.setOnClickListener((View.OnClickListener) this);
             copyLinearLayout.setOnClickListener((View.OnClickListener) this);
+            deleteLinearLayout.setOnClickListener((View.OnClickListener) this);
+            editLinearLayout.setOnClickListener((View.OnClickListener) this);
 
             bottomSheetDialog = new BottomSheetDialog(this);
             bottomSheetDialog.setContentView(view);
@@ -114,13 +116,13 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.shareLinearLayout:
-                bottomSheetDialog.dismiss();
-                break;
-            case R.id.uploadLinearLayout:
-                bottomSheetDialog.dismiss();
-                break;
             case R.id.copyLinearLayout:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.deleteLinearLayout:
+                bottomSheetDialog.dismiss();
+                break;
+            case R.id.editLinearLayout:
                 bottomSheetDialog.dismiss();
                 break;
 
