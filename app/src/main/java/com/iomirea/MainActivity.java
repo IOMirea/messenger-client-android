@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
+//        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
 
         final SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
         if (preferences.getString("token", "") != "") {
@@ -47,7 +48,19 @@ public class MainActivity extends AppCompatActivity {
         logauth.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url){
-                return !(url.startsWith("http://") || url.startsWith("https://")); // then it is not handled by default action
+                if (url.startsWith("iomirea1")) { //checking the URL for scheme required
+                    //and sending it within an explicit Intent
+                    Intent myapp_intent = new Intent(Intent.ACTION_VIEW);
+                    myapp_intent.setData(Uri.parse(url));
+                    myapp_intent.putExtra("fullurl", url);
+                    startActivity(myapp_intent);
+                    finish();
+                    return true; //this might be unnecessary because another Activity
+                    //start had already been called
+
+                }
+                view.loadUrl(url); //handling non-customschemed redirects inside the WebView
+                return false; // then it is not handled by default action
             }});
         WebSettings webSettings = logauth.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -58,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences.edit().putString("token", "MA==.ekU5.CZ7eHwhU97J0uKeDMOuaQQdeaUM").commit();
+                preferences.edit().putString("token", "crabs").commit();
                 String check = preferences.getString("token", "");
                 if (check != "") {
                     Intent intent = new Intent(getApplicationContext(), ChatActivity.class);

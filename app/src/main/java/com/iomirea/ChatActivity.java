@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -53,7 +54,7 @@ public class ChatActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
+//        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
         //временный счетчик, позже удалить
         int counter = 1;
         final RecyclerView chatlist = findViewById(R.id.mainlist);
@@ -103,6 +104,13 @@ public class ChatActivity extends AppCompatActivity
 
         if (id == R.id.nav_secure) {
             // Создание секретноого чата
+            Uri data = getIntent().getData();
+            String scheme = data.toString();
+            Toast.makeText(
+                    getApplicationContext(),
+                    scheme,
+                    Toast.LENGTH_SHORT
+            ).show();
         } else if (id == R.id.nav_group) {
             // Создание беседы
         } else if (id == R.id.nav_tools) {
