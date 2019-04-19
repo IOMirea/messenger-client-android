@@ -1,7 +1,9 @@
 package com.iomirea;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.os.Vibrator;
-
+import android.content.ClipboardManager;
+import android.widget.TextView;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
     LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
     BottomSheetDialog bottomSheetDialog;
+    int copyPosition;
+    final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
 
 
     @Override
@@ -27,7 +31,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ListView messagesView = (ListView) findViewById(R.id.messages_view);
-        final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
         messagesView.setAdapter(tempMessageAdapter);
         TempMessage message = new TempMessage("Привет, слышал про новый мессенджер?",
                 true);
@@ -73,15 +76,17 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
         messagesView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-                //открытие меню
+
+                copyPosition = position;
 
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(27);
+                //открытие меню
                 bottomSheetDialog.show();
-
                 return false;
             }
         });
@@ -94,7 +99,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         source = source.replaceAll("\\s+", " ");
         return source;
     }
-
 
 
     private void createBottomSheetDialog() {
@@ -116,16 +120,30 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.copyLinearLayout:
+            case R.id.copyLinearLayout: {
+
+                copyToClipboard(tempMessageAdapter.getTextFromMessage(copyPosition));
+
                 bottomSheetDialog.dismiss();
+            }
                 break;
-            case R.id.deleteLinearLayout:
+            case R.id.deleteLinearLayout: {
+                tempMessageAdapter.deleteTextInMessage(copyPosition);
                 bottomSheetDialog.dismiss();
+            }
                 break;
-            case R.id.editLinearLayout:
+            case R.id.editLinearLayout: {
+                tempMessageAdapter.editTextInMessage(copyPosition);
                 bottomSheetDialog.dismiss();
+            }
                 break;
 
         }
+    }
+
+    private void copyToClipboard(String clipboard_text){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText( clipboard_text, clipboard_text);
+        clipboard.setPrimaryClip(clip);
     }
 }

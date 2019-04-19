@@ -25,6 +25,10 @@ class TempMessage {
         return text;
     }
 
+    public void setText(String newText) {
+        text = newText;
+    }
+
     public boolean isBelongsToCurrentUser() {
         return belongsToCurrentUser;
     }
@@ -43,6 +47,22 @@ public class TempMessageAdapter extends BaseAdapter {
         this.messages.add(message);
         notifyDataSetChanged();
     }
+
+    public String getTextFromMessage(int position){
+        return this.messages.get(position).getText();
+    }
+
+    public void editTextInMessage(int position){
+
+       this.messages.get(position).setText("Текст изменен");
+        notifyDataSetChanged();
+    }
+
+    public void deleteTextInMessage(int position){
+        this.messages.remove(position);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return messages.size();
