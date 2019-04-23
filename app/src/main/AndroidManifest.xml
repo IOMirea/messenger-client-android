@@ -46,7 +46,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="iomirea1"/>
+                <data android:scheme="iomirea1" android:host="oauth2redirect"/>
             </intent-filter>
         </activity>
         <activity

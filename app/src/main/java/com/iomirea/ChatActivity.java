@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,10 +33,15 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.iomirea.http.VolleyController;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,17 +49,17 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context ctx, Intent intent) {
-            Log.e("logger name", "something");
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_chat);
+        SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+        if (preferences.getString("token", "") != "1"){
+            Uri data = getIntent().getData();
+            getToken(preferences, data);
+        }
 //        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
         //временный счетчик, позже удалить
         int counter = 1;
@@ -104,8 +110,8 @@ public class ChatActivity extends AppCompatActivity
 
         if (id == R.id.nav_secure) {
             // Создание секретноого чата
-            Uri data = getIntent().getData();
-            String scheme = data.toString();
+            SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+            String scheme = preferences.getString("token", "");
             Toast.makeText(
                     getApplicationContext(),
                     scheme,
@@ -135,5 +141,64 @@ public class ChatActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    void getToken(final SharedPreferences preferences, final Uri uri){
+        final Context context = getApplicationContext();
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest tokenRequest = new StringRequest(Request.Method.POST,
+                        "https://iomirea.ml/api/oauth2/token",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+
+                                try {
+                                    JSONObject token = new JSONObject(response);
+                                    Toast.makeText(context, token.toString()
+                                            , Toast.LENGTH_SHORT
+                                    ).show();
+                                    preferences.edit().putString("token", token.getString("access_token")).commit();
+                                } catch (org.json.JSONException e) {
+                                    Toast.makeText(context, getResources().getString(
+                                            R.string.bugreport_delivery_fail
+                                            ), Toast.LENGTH_SHORT
+                                    ).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse == null) {
+                            error.printStackTrace();
+                            Toast.makeText(context, getResources().getString(
+                                    R.string.bugreport_delivery_fail),
+                                     Toast.LENGTH_SHORT
+                            ).show();
+                        } else {
+                            Toast.makeText(context, getResources().getString(
+                                    R.string.bugreport_delivery_fail,
+                                    error.networkResponse.statusCode
+                                    ), Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded; charset=UTF -8";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("code", uri.getQueryParameter("code"));
+                        params.put("client_id", "1");
+                        params.put("redirect_uri", "iomirea1://oauth2redirect");
+                        params.put("scope", "user");
+                        params.put("grant_type", "authorization_code");
+                        params.put("client_secret", "");
+                        return params;
+                    }
+
+        };
+        queue.add(tokenRequest);
     }
 }
