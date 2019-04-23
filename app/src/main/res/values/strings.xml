@@ -116,6 +116,8 @@
     <string name="bottom_edit">Edit</string>
 
     <string name="dark_theme">Dark theme</string>
+    <string name="message_editing_success">Message edited</string>
+    <string name="message_deleting_error">finish editing message</string>
 
 
 </resources>

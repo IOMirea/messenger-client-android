@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +53,19 @@ public class TempMessageAdapter extends BaseAdapter {
         return this.messages.get(position).getText();
     }
 
-    public void editTextInMessage(int position){
-
-       this.messages.get(position).setText("Текст изменен");
+    public void editTextInMessage(int position, String text){
+        this.messages.get(position).setText(text);
         notifyDataSetChanged();
+
+        Toast.makeText(context, context.getResources().getString(R.string.message_editing_success), Toast.LENGTH_SHORT).show();
     }
 
     public void deleteTextInMessage(int position){
         this.messages.remove(position);
         notifyDataSetChanged();
     }
+
+    public boolean belongToCurrentUser(int position){return this.messages.get(position).isBelongsToCurrentUser();}
 
     @Override
     public int getCount() {

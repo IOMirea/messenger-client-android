@@ -118,6 +118,8 @@
     <string name="bottom_edit">Редактировать</string>
 
     <string name="dark_theme">Темная тема</string>
+    <string name="message_editing_success">Сообщение изменено</string>
+    <string name="message_deleting_error">Закончите редактировать сообщение</string>
 
 
 </resources>

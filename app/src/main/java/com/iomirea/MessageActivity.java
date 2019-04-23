@@ -16,13 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.content.ClipboardManager;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static java.sql.Types.NULL;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
     LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
     BottomSheetDialog bottomSheetDialog;
-    int copyPosition;
+    int copyPosition, copyPositionForEditing = -1;
     final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
+    boolean editing = false;
+    Context context;
+
 
 
     @Override
@@ -52,16 +58,26 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         //if(bottomSheetDialog == null){}
 
         final EditText mtext = findViewById((R.id.message_textfield));
-        ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
+        final ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
         //отправка сообщения в функции ниже
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sending = message_trimmer(mtext.getText().toString());
-                if (sending.length()!=0) {
-                    tempMessageAdapter.add(new TempMessage(sending,true));
+                if(editing == false) {
+                    String sending = message_trimmer(mtext.getText().toString());
+                    if (sending.length() != 0) {
+                        tempMessageAdapter.add(new TempMessage(sending, true));
+                    }
+                    mtext.setText("");
                 }
-                mtext.setText("");
+                //редактирование сообщений
+                else{
+                    tempMessageAdapter.editTextInMessage(copyPositionForEditing, mtext.getText().toString());
+                    editing = false;
+                    send_message.setBackgroundResource(R.drawable.ic_send_black_24dp);
+                    mtext.setText("");
+                    copyPositionForEditing = -1;
+                }
             }
         });
         send_message.setOnLongClickListener(new View.OnLongClickListener() {
@@ -86,7 +102,18 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(27);
                 //открытие меню
-                bottomSheetDialog.show();
+                if(copyPositionForEditing == -1) {
+                    bottomSheetDialog.show();
+
+                    editLinearLayout.setVisibility(View.VISIBLE);
+                    if(tempMessageAdapter.belongToCurrentUser(position) == false) {
+                        editLinearLayout.setVisibility(View.GONE);
+                    }
+
+                } else{
+                    Toast.makeText(getApplicationContext(), (R.string.message_deleting_error), Toast.LENGTH_SHORT).show();
+                }
+
                 return false;
             }
         });
@@ -128,16 +155,20 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             }
                 break;
             case R.id.deleteLinearLayout: {
-                tempMessageAdapter.deleteTextInMessage(copyPosition);
-                bottomSheetDialog.dismiss();
+                    tempMessageAdapter.deleteTextInMessage(copyPosition);
+                    bottomSheetDialog.dismiss();
             }
                 break;
             case R.id.editLinearLayout: {
-                tempMessageAdapter.editTextInMessage(copyPosition);
+                editing = true;
                 bottomSheetDialog.dismiss();
+                ImageButton send_message = (ImageButton) findViewById(R.id.send_message);
+                send_message.setBackgroundResource(R.drawable.ic_edit_black_24dp);
+                final EditText mtext = findViewById((R.id.message_textfield));
+                mtext.setText(tempMessageAdapter.getTextFromMessage(copyPosition));
+                copyPositionForEditing = copyPosition;
             }
-                break;
-
+            break;
         }
     }
 
