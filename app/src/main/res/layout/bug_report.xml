@@ -4,7 +4,7 @@
     android:id="@+id/bugreportLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_border">
+    android:background="?colorBackgroundFloating">
 
     <EditText
         android:id="@+id/bug_text"

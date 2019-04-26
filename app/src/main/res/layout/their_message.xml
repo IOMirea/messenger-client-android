@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/message_body"
         android:background="@drawable/their_message"
+        android:textColor="?editTextColor"
         android:padding="10dp"
         android:textSize="18dp"
         android:layout_alignParentLeft="true"

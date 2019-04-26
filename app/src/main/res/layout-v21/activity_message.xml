@@ -29,8 +29,7 @@
         android:id="@+id/message_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:gravity="bottom"
+        android:background="?colorBackgroundFloating"        android:gravity="bottom"
         android:orientation="horizontal"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center">
