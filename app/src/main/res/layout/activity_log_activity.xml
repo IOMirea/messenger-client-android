@@ -26,6 +26,7 @@
         android:stackFromBottom="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_marginTop="?attr/actionBarSize"
-        tools:listitem="@layout/log_item" />
+        tools:listitem="@layout/log_item"
+        android:background="?colorBackgroundFloating"/>
 
 </android.support.design.widget.CoordinatorLayout>

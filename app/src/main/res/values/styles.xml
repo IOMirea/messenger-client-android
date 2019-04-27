@@ -9,6 +9,7 @@
         <item name="colorBackgroundFloating">@color/colorBackground</item>
         <item name="editTextColor">@color/textColor</item>
         <item name="color">@color/colorTheirMessage</item>
+        <item name="android:textColorSecondary">@color/hintColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -33,7 +34,7 @@
         <item name="colorBackgroundFloating">@color/colorBackgroundNight</item>
         <item name="editTextColor">@color/textColorNight</item>
         <item name="color">@color/colorTheirMessageNight</item>
-
+        <item name="android:textColorSecondary">@color/hintColor</item>
     </style>
 
     <style name="AppThemeNight.NoActionBarNight">

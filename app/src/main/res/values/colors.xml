@@ -5,9 +5,9 @@
     <color name="colorAccent">#6A5ACD</color>
     <color name="textColor">#000000</color>
     <color name="colorBackground">#f3f3f3</color>
-    <color name="hintColor">#8F8F8F</color>
     <color name="colorTheirMessage">#FFFFFF</color>
 
+    <color name="hintColor">#8F8F8F</color>
 
     <color name="colorPrimaryNight">#181818</color>
     <color name="colorPrimaryDarkNight">#181818</color>

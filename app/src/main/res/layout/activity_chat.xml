@@ -26,6 +26,7 @@
         android:background="?colorBackgroundFloating"
         app:itemIconTint="@color/colorAccent"
         app:itemTextColor="?editTextColor"
+        android:editTextColor="@color/colorPrimary"
         />
 
 </android.support.v4.widget.DrawerLayout>
