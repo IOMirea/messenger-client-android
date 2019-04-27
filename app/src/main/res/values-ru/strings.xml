@@ -120,6 +120,8 @@
     <string name="dark_theme">Темная тема</string>
     <string name="message_editing_success">Сообщение изменено</string>
     <string name="message_deleting_error">Закончите редактировать сообщение</string>
+    <string name="net_request_failed_with_message">Ошибка запроса: %1$s</string>
+    <string name="net_request_failed_with_code">Ошибка запроса. Код: %1$d</string>
 
 
 </resources>

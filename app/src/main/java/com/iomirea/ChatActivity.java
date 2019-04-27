@@ -1,12 +1,8 @@
 package com.iomirea;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,27 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.JsonReader;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.iomirea.http.VolleyController;
 
 import org.json.JSONObject;
@@ -56,7 +39,9 @@ public class ChatActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_chat);
         SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        if (preferences.getString("token", "") != "1"){
+
+        // TODO: move this to intent handler
+        if (!preferences.getString("token", "").equals("1")) {
             Uri data = getIntent().getData();
             getToken(preferences, data);
         }
@@ -77,7 +62,6 @@ public class ChatActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
             }
         });
 
@@ -101,7 +85,6 @@ public class ChatActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -132,7 +115,7 @@ public class ChatActivity extends AppCompatActivity
             // Окошко с полезной информацией
         } else if (id == R.id.nav_out) {
             SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-            preferences.edit().remove("token").commit();
+            preferences.edit().remove("token").apply();
             Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(logout_intent);
             finish();
@@ -143,43 +126,36 @@ public class ChatActivity extends AppCompatActivity
         return true;
     }
     void getToken(final SharedPreferences preferences, final Uri uri){
+        // TODO: move this to a separate activity
+
         final Context context = getApplicationContext();
-        RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest tokenRequest = new StringRequest(Request.Method.POST,
                         "https://iomirea.ml/api/oauth2/token",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-
                                 try {
                                     JSONObject token = new JSONObject(response);
-                                    Toast.makeText(context, token.toString()
-                                            , Toast.LENGTH_SHORT
-                                    ).show();
-                                    preferences.edit().putString("token", token.getString("access_token")).commit();
+
+                                    preferences.edit().putString("token", token.getString("access_token")).apply();
                                 } catch (org.json.JSONException e) {
-                                    Toast.makeText(context, getResources().getString(
-                                            R.string.bugreport_delivery_fail
-                                            ), Toast.LENGTH_SHORT
+                                    Toast.makeText(context, getResources().getString(R.string.net_request_failed_with_message, "Access token missing from response"), Toast.LENGTH_SHORT
                                     ).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        String errorText;
+
                         if (error.networkResponse == null) {
                             error.printStackTrace();
-                            Toast.makeText(context, getResources().getString(
-                                    R.string.bugreport_delivery_fail),
-                                     Toast.LENGTH_SHORT
-                            ).show();
+                            errorText = getResources().getString(R.string.net_request_failed_with_message, error.toString());
                         } else {
-                            Toast.makeText(context, getResources().getString(
-                                    R.string.bugreport_delivery_fail,
-                                    error.networkResponse.statusCode
-                                    ), Toast.LENGTH_SHORT
-                            ).show();
+                            errorText = getResources().getString(R.string.net_request_failed_with_code, error.networkResponse.statusCode);
                         }
+
+                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
                     }
                 }) {
                     @Override
@@ -197,8 +173,8 @@ public class ChatActivity extends AppCompatActivity
                         params.put("client_secret", "");
                         return params;
                     }
-
         };
-        queue.add(tokenRequest);
+
+        VolleyController.getInstance(getApplicationContext()).addToRequestQueue(tokenRequest);
     }
 }

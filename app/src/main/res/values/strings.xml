@@ -17,6 +17,10 @@
     <string name="title_activity_test">Test</string>
     <string name="Settings">Settings</string>
 
+    <!-- Strings related to networking -->
+    <string name="net_request_failed_with_code">Request failed with code: %1$d</string>
+    <string name="net_request_failed_with_message">Request failed: %1$s</string>
+
     <!-- Strings related to bug report screen -->
     <string name="bug_name">Bugreport</string>
     <string name="bugreport_attach_device_info_checkbox">Attach device info to report</string>
