@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorBackgroundFloating">@color/colorBackground</item>
         <item name="editTextColor">@color/textColor</item>
+        <item name="color">@color/colorTheirMessage</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -31,13 +32,15 @@
         <item name="colorAccent">@color/colorAccentNight</item>
         <item name="colorBackgroundFloating">@color/colorBackgroundNight</item>
         <item name="editTextColor">@color/textColorNight</item>
+        <item name="color">@color/colorTheirMessageNight</item>
 
     </style>
 
-    <style name="AppTheme.NoActionBarNight">
+    <style name="AppThemeNight.NoActionBarNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+
     </style>
 
     <style name="AppThemeNight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

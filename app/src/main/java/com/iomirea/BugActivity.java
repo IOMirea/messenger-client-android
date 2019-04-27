@@ -29,6 +29,7 @@ public class BugActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.AppThemeNight);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bug);

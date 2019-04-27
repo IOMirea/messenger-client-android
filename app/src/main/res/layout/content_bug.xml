@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorBackgroundFloating">
+
     <EditText
         android:id="@+id/bug_text"
         android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:inputType="textCapSentences|textMultiLine"
         android:maxLength="4096"
         android:hint="@string/bugreport_hint"
+        android:textColorHint="@color/hintColor"
         android:textAlignment="gravity"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/bug_checkbox"

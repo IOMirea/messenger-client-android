@@ -119,6 +119,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.AppThemeNight);
         super.onCreate(savedInstanceState);
         setupActionBar();
     }

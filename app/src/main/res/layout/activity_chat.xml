@@ -24,6 +24,8 @@
         app:headerLayout="@layout/nav_header_chat"
         app:menu="@menu/activity_chat_drawer"
         android:background="?colorBackgroundFloating"
+        app:itemIconTint="@color/colorAccent"
+        app:itemTextColor="?editTextColor"
         />
 
 </android.support.v4.widget.DrawerLayout>

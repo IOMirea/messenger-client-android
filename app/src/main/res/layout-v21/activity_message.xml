@@ -29,7 +29,8 @@
         android:id="@+id/message_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorBackgroundFloating"        android:gravity="bottom"
+        android:background="?colorBackgroundFloating"
+        android:gravity="bottom"
         android:orientation="horizontal"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center">
@@ -41,10 +42,12 @@
             android:layout_weight="2"
             android:ems="10"
             android:hint="@string/message_assist"
+            android:textColorHint="@color/hintColor"
             android:inputType="textCapSentences|textMultiLine"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text=""
+            android:textColor="?editTextColor"
             android:maxLines="5"/>
 
         <ImageButton

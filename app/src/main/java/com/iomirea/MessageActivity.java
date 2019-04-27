@@ -33,6 +33,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.AppThemeNight);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);

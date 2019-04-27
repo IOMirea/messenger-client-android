@@ -50,7 +50,8 @@
                 android:gravity="right"
                 android:layout_marginRight="10dp"
                 android:text="@string/time"
-                android:textColor="?editTextColor"/>
+                android:textColor="@color/hintColor"/>
+
         </LinearLayout>
 
         <android.support.constraint.Guideline
@@ -66,7 +67,7 @@
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:text="@string/last_message"
             android:textSize="15dp"
-            android:textColor="?editTextColor"/>
+            android:textColor="@color/hintColor"/>
 
     </LinearLayout>
 </LinearLayout>
