@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">IOMirea</string>
+    <string name="version" translatable="false">0.4-dev</string>
+    <string name="versionText">Version</string>
     <string name="title_activity_chat">Chats</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,6 +17,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_test">Test</string>
+    <string name="title_activity_logs">Logs</string>
     <string name="Settings">Settings</string>
 
     <!-- Strings related to networking -->

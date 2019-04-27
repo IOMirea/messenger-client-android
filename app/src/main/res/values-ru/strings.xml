@@ -122,6 +122,8 @@
     <string name="message_deleting_error">Закончите редактировать сообщение</string>
     <string name="net_request_failed_with_message">Ошибка запроса: %1$s</string>
     <string name="net_request_failed_with_code">Ошибка запроса. Код: %1$d</string>
+    <string name="versionText">Version</string>
+    <string name="title_activity_logs">Отладка</string>
 
 
 </resources>

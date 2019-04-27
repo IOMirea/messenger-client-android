@@ -119,6 +119,10 @@ public class ChatActivity extends AppCompatActivity
             Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(logout_intent);
             finish();
+        } else if (id == R.id.nav_log_version) {
+            getIntent();
+            Intent log_intent = new Intent(getApplicationContext(), LogActivity.class);
+            startActivity(log_intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

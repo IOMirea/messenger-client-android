@@ -16,26 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
-
-            <ImageButton
-                android:id="@+id/bug_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@drawable/ic_send_black_24dp"
-                style="@style/Button"
-                 />
-        </android.support.v7.widget.Toolbar>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_bug"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/log_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize" />
-
-
+        android:stackFromBottom="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_marginTop="?attr/actionBarSize"
+        tools:listitem="@layout/log_item" />
 
 </android.support.design.widget.CoordinatorLayout>
