@@ -124,6 +124,11 @@
     <string name="net_request_failed_with_code">Ошибка запроса. Код: %1$d</string>
     <string name="versionText">Version</string>
     <string name="title_activity_logs">Отладка</string>
+    <string name="pref_title_language">Языки и регион</string>
+    <string-array name="pref_languages">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
 
 
 </resources>

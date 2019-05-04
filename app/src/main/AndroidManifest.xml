@@ -68,6 +68,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+            <data
+                android:host="oauth2redirect"
+                android:scheme="iomirea1" />
+        </intent-filter>
         </activity>
     </application>
 

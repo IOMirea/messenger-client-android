@@ -29,6 +29,12 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_add_friends_to_messages" />
+    <ListPreference
+        android:defaultValue="English"
+        android:entries="@array/pref_languages"
+        android:entryValues="@array/pref_languages"
+        android:key="language"
+        android:title="@string/pref_title_language" />
 
 
 </PreferenceScreen>

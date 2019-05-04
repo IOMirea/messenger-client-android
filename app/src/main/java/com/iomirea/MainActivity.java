@@ -16,6 +16,17 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.iomirea.http.VolleyController;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -35,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 //        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
 
         final SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        if (preferences.getString("token", "") != "") {
+        if (preferences.getString("token", "null") != "null") {
             Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intent);
             finish();
@@ -47,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url){
                 if (url.startsWith("iomirea1")) { //checking the URL for scheme required
                     //and sending it within an explicit Intent
-                    Intent myapp_intent = new Intent(Intent.ACTION_VIEW);
-                    myapp_intent.setData(Uri.parse(url));
-                    myapp_intent.putExtra("fullurl", url);
-                    startActivity(myapp_intent);
-                    finish();
+
+                    getToken(preferences, Uri.parse(url));
+//                    Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
+//                    myapp_intent.setData(Uri.parse(url));
+//                    myapp_intent.putExtra("fullurl", url);
+//                    startActivity(myapp_intent);
+//                    finish();
                     return true; //this might be unnecessary because another Activity
                     //start had already been called
 
@@ -84,5 +97,59 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    void getToken(final SharedPreferences preferences, final Uri uri){
+
+        final Context context = getApplicationContext();
+        StringRequest tokenRequest = new StringRequest(Request.Method.POST,
+                "https://iomirea.ml/api/oauth2/token",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject token = new JSONObject(response);
+
+                            preferences.edit().putString("token", token.getString("access_token")).apply();
+                        } catch (org.json.JSONException e) {
+                            Toast.makeText(context, getResources().getString(R.string.net_request_failed_with_message, "Access token missing from response"), Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
+                    startActivity(myapp_intent);
+                    finish();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String errorText;
+
+                if (error.networkResponse == null) {
+                    error.printStackTrace();
+                    errorText = getResources().getString(R.string.net_request_failed_with_message, error.toString());
+                } else {
+                    errorText = getResources().getString(R.string.net_request_failed_with_code, error.networkResponse.statusCode);
+                }
+
+                Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF -8";
+            }
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("code", uri.getQueryParameter("code"));
+                params.put("client_id", "1");
+                params.put("redirect_uri", "iomirea1://oauth2redirect");
+                params.put("scope", "user");
+                params.put("grant_type", "authorization_code");
+                params.put("client_secret", "");
+                return params;
+            }
+        };
+
+        VolleyController.getInstance(getApplicationContext()).addToRequestQueue(tokenRequest);
     }
 }

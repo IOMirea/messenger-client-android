@@ -40,6 +40,11 @@
     <string name="pref_header_general">Interface</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_title_language">Languages and Regions</string>
+    <string-array name="pref_languages">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>

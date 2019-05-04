@@ -40,11 +40,18 @@ public class ChatActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_chat);
         SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+        SharedPreferences preferences2 = getPreferences(MODE_PRIVATE);
+        if (preferences2.getBoolean("example_switch", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
 
         // TODO: move this to intent handler
-        if (!preferences.getString("token", "").equals("1")) {
-            Uri data = getIntent().getData();
-            getToken(preferences, data);
+        if (preferences.getString("token", "null").equals("null")) {
+//            Uri data = getIntent().getData();
+//            getToken(preferences, data);
+            Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(logout_intent);
+            finish();
         }
 //        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
         //временный счетчик, позже удалить
@@ -95,10 +102,11 @@ public class ChatActivity extends AppCompatActivity
         if (id == R.id.nav_secure) {
             // Создание секретноого чата
             SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+            SharedPreferences preferences2 = getSharedPreferences(getResources().getString(R.string.pref_title_vibrate),MODE_PRIVATE);
             String scheme = preferences.getString("token", "");
             Toast.makeText(
                     getApplicationContext(),
-                    scheme,
+                    scheme + preferences2.getBoolean("example_switch", false),
                     Toast.LENGTH_SHORT
             ).show();
         } else if (id == R.id.nav_group) {
@@ -117,9 +125,10 @@ public class ChatActivity extends AppCompatActivity
         } else if (id == R.id.nav_out) {
             SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
             preferences.edit().remove("token").apply();
-            Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(logout_intent);
-            finish();
+            this.recreate();
+//            Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(logout_intent);
+//            finish();
         } else if (id == R.id.nav_log_version) {
             getIntent();
             Intent log_intent = new Intent(getApplicationContext(), LogActivity.class);
@@ -129,57 +138,5 @@ public class ChatActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-    void getToken(final SharedPreferences preferences, final Uri uri){
-        // TODO: move this to a separate activity
-
-        final Context context = getApplicationContext();
-        StringRequest tokenRequest = new StringRequest(Request.Method.POST,
-                        "https://iomirea.ml/api/oauth2/token",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject token = new JSONObject(response);
-
-                                    preferences.edit().putString("token", token.getString("access_token")).apply();
-                                } catch (org.json.JSONException e) {
-                                    Toast.makeText(context, getResources().getString(R.string.net_request_failed_with_message, "Access token missing from response"), Toast.LENGTH_SHORT
-                                    ).show();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String errorText;
-
-                        if (error.networkResponse == null) {
-                            error.printStackTrace();
-                            errorText = getResources().getString(R.string.net_request_failed_with_message, error.toString());
-                        } else {
-                            errorText = getResources().getString(R.string.net_request_failed_with_code, error.networkResponse.statusCode);
-                        }
-
-                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
-                    }
-                }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/x-www-form-urlencoded; charset=UTF -8";
-                    }
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("code", uri.getQueryParameter("code"));
-                        params.put("client_id", "1");
-                        params.put("redirect_uri", "iomirea1://oauth2redirect");
-                        params.put("scope", "user");
-                        params.put("grant_type", "authorization_code");
-                        params.put("client_secret", "");
-                        return params;
-                    }
-        };
-
-        VolleyController.getInstance(getApplicationContext()).addToRequestQueue(tokenRequest);
     }
 }
