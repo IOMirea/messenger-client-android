@@ -2,8 +2,10 @@ package com.iomirea;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +36,10 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppThemeNight);
-
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ListView messagesView = (ListView) findViewById(R.id.messages_view);

@@ -1,10 +1,12 @@
 package com.iomirea;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,7 +31,10 @@ public class BugActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.AppThemeNight);
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bug);

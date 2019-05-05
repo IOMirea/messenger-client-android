@@ -1,8 +1,10 @@
 package com.iomirea;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -17,11 +19,14 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toolbar;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -40,6 +45,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -75,7 +81,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         // Set the summary to reflect the new ringtone display
                         // name.
                         String name = ringtone.getTitle(preference.getContext());
-                        preference.setSummary(name);
                     }
                 }
 
@@ -120,20 +125,45 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.AppThemeNight);
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
 
+        }
+
+        setupActionBar();
+        super.onCreate(savedInstanceState);
+
+    }
+//
+//    @Override
+//    public void onBackPressed(){
+//        int fragmentCount = getFragmentManager().getBackStackEntryCount();
+//        if (fragmentCount < 1) {
+//
+//
+//            super.onBackPressed();
+//        } else {
+//            if (fragmentCount >= 1) {
+//                getFragmentManager().popBackStack();
+//            } else {
+//                super.onBackPressed();
+//            }
+//
+//        }
+//    }
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
+
         ActionBar actionBar = getSupportActionBar();
+
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
     }
 
     @Override
@@ -193,7 +223,47 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
+            bindPreferenceSummaryToValue(findPreference("language"));
+            final SwitchPreference theme = (SwitchPreference) findPreference("example_switch");
+            final ListPreference language = (ListPreference) findPreference("language");
+            language.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    language.setValue((String)newValue);
+                    SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    Locale locale = new Locale(lang.getString("language", "en"));
+                    Locale.setDefault(locale);
+                    Configuration config = new Configuration();
+                    if (Build.VERSION.SDK_INT >= 17)
+                    {
+                        config.setLocale(locale);
 
+                    } else
+                    {
+                        config.locale = locale;
+                    }
+                    getActivity().getBaseContext().getResources().updateConfiguration(config,
+                            getActivity().getBaseContext().getResources().getDisplayMetrics());
+                    Intent back = new Intent(getActivity().getApplicationContext(),ChatActivity.class);
+                    back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(back);
+                    getActivity().recreate();
+                    return false;
+                }
+            });
+            theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    SharedPreferences DarkTheme = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    theme.setChecked(!theme.isChecked());
+                    DarkTheme.edit().putBoolean("DarkTheme", theme.isChecked()).commit();
+                    Intent back = new Intent(getActivity().getApplicationContext(),ChatActivity.class);
+                    back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(back);
+                    getActivity().recreate();
+                    return false;
+                }
+            });
         }
 
         @Override

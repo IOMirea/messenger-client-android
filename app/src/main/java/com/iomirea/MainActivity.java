@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,6 +28,7 @@ import com.iomirea.http.VolleyController;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -39,6 +43,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Locale locale = new Locale(lang.getString("language", "en"));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        if (Build.VERSION.SDK_INT >= 17)
+        {
+            config.setLocale(locale);
+
+        } else
+        {
+            config.locale = locale;
+        }
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+        if (lang.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -110,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject token = new JSONObject(response);
 
                             preferences.edit().putString("token", token.getString("access_token")).apply();
+                            Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
+                            startActivity(myapp_intent);
+                            finish();
                         } catch (org.json.JSONException e) {
                             Toast.makeText(context, getResources().getString(R.string.net_request_failed_with_message, "Access token missing from response"), Toast.LENGTH_SHORT
                             ).show();
                         }
-                    Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
-                    startActivity(myapp_intent);
-                    finish();
                     }
                 }, new Response.ErrorListener() {
             @Override

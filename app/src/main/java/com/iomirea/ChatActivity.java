@@ -3,8 +3,11 @@ package com.iomirea;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +30,7 @@ import com.iomirea.http.VolleyController;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -35,20 +39,31 @@ public class ChatActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.AppThemeNight);
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
+        SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Locale locale = new Locale(lang.getString("language", "en"));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        if (Build.VERSION.SDK_INT >= 17)
+        {
+            config.setLocale(locale);
+
+        } else
+        {
+            config.locale = locale;
+        }
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_chat);
         SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        SharedPreferences preferences2 = getPreferences(MODE_PRIVATE);
-        if (preferences2.getBoolean("example_switch", false) == true){
-            setTheme(R.style.AppThemeNight);
-        }
 
         // TODO: move this to intent handler
         if (preferences.getString("token", "null").equals("null")) {
-//            Uri data = getIntent().getData();
-//            getToken(preferences, data);
             Intent logout_intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(logout_intent);
             finish();
@@ -84,6 +99,15 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume(){
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -102,11 +126,11 @@ public class ChatActivity extends AppCompatActivity
         if (id == R.id.nav_secure) {
             // Создание секретноого чата
             SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-            SharedPreferences preferences2 = getSharedPreferences(getResources().getString(R.string.pref_title_vibrate),MODE_PRIVATE);
+            SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String scheme = preferences.getString("token", "");
             Toast.makeText(
                     getApplicationContext(),
-                    scheme + preferences2.getBoolean("example_switch", false),
+                    scheme + preferences2.getString("language", "en"),
                     Toast.LENGTH_SHORT
             ).show();
         } else if (id == R.id.nav_group) {

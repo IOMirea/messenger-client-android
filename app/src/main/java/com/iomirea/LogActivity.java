@@ -1,5 +1,7 @@
 package com.iomirea;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,10 @@ public class LogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppThemeNight);
+        SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (themePref.getBoolean("DarkTheme", false) == true){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
