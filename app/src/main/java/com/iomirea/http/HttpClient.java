@@ -23,7 +23,11 @@ public class HttpClient {
         this.token = token;
     }
 
-    public void send_message(String token, Long channel_id, String content)
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void send_message(Long channel_id, String content)
     {
         String url = BASE_URL + "/channels/" + channel_id + "/messages";
 

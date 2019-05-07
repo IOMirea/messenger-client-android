@@ -58,20 +58,20 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!editing) {
-                    String sending = message_trimmer(inputField.getText().toString());
-                    if (sending.length() != 0) {
-                        tempMessageAdapter.add(new TempMessage(sending, true));
-                    }
-                    inputField.setText("");
-                }
-                //редактирование сообщений
-                else{
+                if (editing) {
                     tempMessageAdapter.editTextInMessage(copyPositionForEditing, inputField.getText().toString());
                     editing = false;
                     sendButton.setBackgroundResource(R.drawable.ic_send_black_24dp);
                     inputField.setText("");
                     copyPositionForEditing = -1;
+                } else {
+                    MainActivity.client.send_message(0L, inputField.getText().toString());
+
+                    String sending = message_trimmer(inputField.getText().toString());
+                    if (sending.length() != 0) {
+                        tempMessageAdapter.add(new TempMessage(sending, true));
+                    }
+                    inputField.setText("");
                 }
             }
         });
@@ -87,7 +87,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
         });
-
 
         messagesView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override

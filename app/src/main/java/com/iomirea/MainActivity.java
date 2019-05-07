@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.iomirea.http.HttpClient;
+import com.iomirea.http.State;
 import com.iomirea.http.VolleyController;
 
 import org.json.JSONObject;
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public static HttpClient client;
+    private State state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
+
         if (lang.getBoolean("DarkTheme", false)) {
             setTheme(R.style.AppThemeNight);
         }
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         logauth.loadUrl("https://iomirea.ml/api/oauth2/authorize?response_type=code&client_id=1&redirect_uri=iomirea1://oauth2redirect&scope=user");
 
-
         ImageButton temp = findViewById(R.id.TokenTest);
         temp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,9 +125,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-    void getToken(final SharedPreferences preferences, final Uri uri){
 
+        client = new HttpClient(this, preferences.getString("token", ""));
+        state = new State();
+    }
+
+    void getToken(final SharedPreferences preferences, final Uri uri){
         final Context context = getApplicationContext();
         StringRequest tokenRequest = new StringRequest(Request.Method.POST,
                 "https://iomirea.ml/api/oauth2/token",
@@ -130,9 +138,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject token = new JSONObject(response);
+                            String access_token = new JSONObject(response).getString("access_token");
 
-                            preferences.edit().putString("token", token.getString("access_token")).apply();
+                            preferences.edit().putString("token", access_token).apply();
+                            client.setToken(access_token);
+
                             Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
                             startActivity(myapp_intent);
                             finish();
