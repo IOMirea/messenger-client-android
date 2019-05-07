@@ -1,11 +1,8 @@
 package com.iomirea;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -21,17 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.iomirea.http.VolleyController;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 
 public class ChatActivity extends AppCompatActivity
@@ -40,21 +27,17 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (themePref.getBoolean("DarkTheme", false) == true){
+        if (themePref.getBoolean("DarkTheme", false)) {
             setTheme(R.style.AppThemeNight);
         }
         SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         Locale locale = new Locale(lang.getString("language", "en"));
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        if (Build.VERSION.SDK_INT >= 17)
-        {
-            config.setLocale(locale);
 
-        } else
-        {
-            config.locale = locale;
-        }
+        Configuration config = new Configuration();
+        config.locale = locale;
+
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
         super.onCreate(savedInstanceState);
@@ -101,7 +84,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public void onResume(){
         SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (themePref.getBoolean("DarkTheme", false) == true){
+        if (themePref.getBoolean("DarkTheme", false)) {
             setTheme(R.style.AppThemeNight);
         }
         super.onResume();

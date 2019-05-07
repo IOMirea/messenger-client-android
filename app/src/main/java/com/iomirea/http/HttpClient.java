@@ -1,84 +1,72 @@
-﻿package com.iomirea.http;
+package com.iomirea.http;
 
 import android.content.Context;
+
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HttpClient {
+    private final String API_URL = "https://iomirea.ml/api/";
+    private final String API_VERSION = "v0";
+    private final String BASE_URL = API_URL + API_VERSION;
 
-    private Context context;
-
-    private static final String API = "https://iomirea.ml/api/";
-
-    private static final String APIVersion = "v0";
+    private String token;
 
     private RequestQueue queue;
 
-    public interface Method {
-        int GET = 0;
-        int POST = 1;
-        int PUT = 2;
-        int DELETE = 3;
-    }
-
-    public HttpClient(Context context)
+    public HttpClient(Context context, String token)
     {
-        this.context = context;
-        queue = Volley.newRequestQueue(context);
+        this.queue = VolleyController.getInstance(context).getRequestQueue();
+        this.token = token;
     }
 
     public void send_message(String token, Long channel_id, String content)
     {
-        String url = API + APIVersion + "/channels/" + channel_id + "/messages";
+        String url = BASE_URL + "/channels/" + channel_id + "/messages";
 
         HashMap<String, String> body = new HashMap<>();
         body.put("channel_id", channel_id.toString());
         body.put("content", content);
 
-        GenericRequest request = new GenericRequest(Method.POST, url,null, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Message.class, body, null, null, token);
         queue.add(request);
     }
 
-    public void get_message(String token, Long channel_id, Long message_id)
+    public void get_message(Long channel_id, Long message_id)
     {
-        String url = API + APIVersion + "/channels/" + channel_id + "/messages/" + message_id;
+        String url = BASE_URL + "/channels/" + channel_id + "/messages/" + message_id;
 
         //Тестирование получения сообщения
-        Response.Listener listner = new Response.Listener() {
+        Response.Listener listener = new Response.Listener() {
             @Override
             public void onResponse(Object response)
             {
                 Message message = (Message) response;
-                System.out.println("id: " + message.getId() + "\nedit_id: " + message.getEditID() + "\nchannel_id: " +
-                                    message.getChannelId() + "\ncontent: " + message.getContent() + "\npinned: " + message.isPinned() +
-                                    "\nauthor_id: " + message.getAuthorId() + "\nauthor_name:" + message.getAuthorName() +
-                                    "\nis_bot: " + message.fromBot());
+                System.out.println(message);
             }
         };
 
-        GenericRequest request = new GenericRequest(url, Message.class, listner, null, token);
+        GenericRequest<Message> request = new GenericRequest<>(url, Message.class, listener, null, token);
         queue.add(request);
     }
 
 
-    public void create_channel(String token, HashMap body)
+    public void create_channel(HashMap body)
     {
-        String url = API + APIVersion + "/channels";
+        String url = BASE_URL + "/channels";
 
-        GenericRequest request = new GenericRequest(Method.POST, url,null, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Channel.class, body, null, null, token);
         queue.add(request);
     }
 
-    public void send_bugreport(String token, HashMap body)
+    public void send_bugreport(HashMap body)
     {
-        String url = API + APIVersion + "/bugreports";
+        String url = BASE_URL + "/bugreports";
 
-        GenericRequest request = new GenericRequest(Method.POST, url,null, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, null, body, null, null, token);
         queue.add(request);
     }
 }

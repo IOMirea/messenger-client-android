@@ -127,6 +127,7 @@
         <item>English</item>
         <item>Русский</item>
     </string-array>
+    <string name="toast_text_copied_to_clipboard">Текст скопирован в буфер</string>
 
 
 </resources>

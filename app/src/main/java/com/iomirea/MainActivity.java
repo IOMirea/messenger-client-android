@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -44,24 +43,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences lang = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         Locale locale = new Locale(lang.getString("language", "en"));
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        if (Build.VERSION.SDK_INT >= 17)
-        {
-            config.setLocale(locale);
 
-        } else
-        {
-            config.locale = locale;
-        }
+        Configuration config = new Configuration();
+        config.locale = locale;
+
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        if (lang.getBoolean("DarkTheme", false) == true){
+        if (lang.getBoolean("DarkTheme", false)) {
             setTheme(R.style.AppThemeNight);
         }
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
@@ -72,30 +70,34 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        String logurl = "https://iomirea.ml/api/oauth2/authorize?response_type=code&client_id=1&redirect_uri=iomirea1://oauth2redirect&scope=user";
+
         WebView logauth = findViewById(R.id.logauth);
         logauth.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url){
-                if (url.startsWith("iomirea1")) { //checking the URL for scheme required
-                    //and sending it within an explicit Intent
-
+                // Handle custom url scheme redirects
+                if (url.startsWith("iomirea1")) {
                     getToken(preferences, Uri.parse(url));
 //                    Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
 //                    myapp_intent.setData(Uri.parse(url));
 //                    myapp_intent.putExtra("fullurl", url);
 //                    startActivity(myapp_intent);
 //                    finish();
-                    return true; //this might be unnecessary because another Activity
-                    //start had already been called
+
+                    // This might be redundant because another Activity have already been launched
+                    return true;
 
                 }
-                view.loadUrl(url); //handling non-customschemed redirects inside the WebView
-                return false; // then it is not handled by default action
+
+                // Handling other redirects inside the WebView
+                view.loadUrl(url);
+
+                // Avoid default action handler
+                return false;
             }});
         WebSettings webSettings = logauth.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        logauth.loadUrl(logurl);
+        logauth.loadUrl("https://iomirea.ml/api/oauth2/authorize?response_type=code&client_id=1&redirect_uri=iomirea1://oauth2redirect&scope=user");
 
 
         ImageButton temp = findViewById(R.id.TokenTest);

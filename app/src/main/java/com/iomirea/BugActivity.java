@@ -32,7 +32,7 @@ public class BugActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences themePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (themePref.getBoolean("DarkTheme", false) == true){
+        if (themePref.getBoolean("DarkTheme", false)) {
             setTheme(R.style.AppThemeNight);
         }
         super.onCreate(savedInstanceState);

@@ -3,9 +3,6 @@ package com.iomirea.http;
 import java.util.ArrayList;
 
 public final class Channel extends APIObject {
-
-    private final static int MAX_CHANNEL_NAME = 128;
-
     private ArrayList<Long> user_ids;
 
     private ArrayList<Long> pinned_ids;
@@ -14,43 +11,17 @@ public final class Channel extends APIObject {
 
     private String name;
 
-    public Channel(Long id, String name, ArrayList user_ids, ArrayList pinned_ids, ArrayList  messages)
+    public Channel(Long id, String name, ArrayList<Long> user_ids, ArrayList<Long> pinned_ids, ArrayList<Message> messages)
     {
         super(id);
+
         this.name = name;
         this.user_ids = user_ids;
         this.pinned_ids = pinned_ids;
         this.messages = messages;
     }
 
-    public Channel(Long id, String name, ArrayList user_ids, ArrayList pinned_ids)
-    {
-        super(id);
-        this.name = name;
-        this.user_ids = user_ids;
-        this.pinned_ids = pinned_ids;
-        this.messages = new ArrayList<Message>();
-    }
-
-    public Channel(Long id, String name, ArrayList user_ids)
-    {
-        super(id);
-        this.name = name;
-        this.user_ids = user_ids;
-        this.pinned_ids = new ArrayList<Long>();
-        this.messages = new ArrayList<Message>();
-    }
-
-    public Channel(Long id, String name)
-    {
-        super(id);
-        this.name = name;
-        this.user_ids = new ArrayList<Long>();
-        this.pinned_ids = new ArrayList<Long>();
-        this.messages = new ArrayList<Message>();
-    }
-
-    public final boolean removePinnedId(Long id)
+    public final boolean removePinnedID(Long id)
     {
         try {
             pinned_ids.remove(id);
@@ -62,7 +33,7 @@ public final class Channel extends APIObject {
         return true;
     }
 
-    public final boolean addPinnedId(Long id)
+    public final boolean addPinnedID(Long id)
     {
         try {
             pinned_ids.add(id);
@@ -74,7 +45,7 @@ public final class Channel extends APIObject {
         return true;
     }
 
-    public final boolean removeUserId(Long id)
+    public final boolean removeUserID(Long id)
     {
         try {
             user_ids.remove(id);
@@ -86,7 +57,7 @@ public final class Channel extends APIObject {
         return true;
     }
 
-    public final boolean addUserId(Long id)
+    public final boolean addUserID(Long id)
     {
         try {
             user_ids.add(id);
@@ -133,12 +104,12 @@ public final class Channel extends APIObject {
         return name;
     }
 
-    public ArrayList getUserIds()
+    public ArrayList getUserIDs()
     {
         return user_ids;
     }
 
-    public ArrayList getPinnedIds()
+    public ArrayList getPinnedIDs()
     {
         return pinned_ids;
     }

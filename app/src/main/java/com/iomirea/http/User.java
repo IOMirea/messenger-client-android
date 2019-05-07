@@ -11,6 +11,7 @@ public final class User extends APIObject {
     public User (Long id, String name, boolean bot)
     {
         super(id);
+
         this.name = name;
         this.bot = bot;
     }
@@ -18,6 +19,7 @@ public final class User extends APIObject {
     public User (Long id, String name)
     {
         super(id);
+
         this.name = name;
         this.bot = false;
     }
@@ -25,11 +27,6 @@ public final class User extends APIObject {
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public Long getId()
-    {
-        return id;
     }
 
     public String getName()

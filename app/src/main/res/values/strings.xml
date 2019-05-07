@@ -20,6 +20,9 @@
     <string name="title_activity_logs">Logs</string>
     <string name="Settings">Settings</string>
 
+    <!-- Strings related to chat window -->
+    <string name="toast_text_copied_to_clipboard">Copied to clipboard</string>
+
     <!-- Strings related to networking -->
     <string name="net_request_failed_with_code">Request failed with code: %1$d</string>
     <string name="net_request_failed_with_message">Request failed: %1$s</string>
@@ -132,6 +135,4 @@
     <string name="dark_theme">Dark theme</string>
     <string name="message_editing_success">Message edited</string>
     <string name="message_deleting_error">finish editing message</string>
-
-
 </resources>
