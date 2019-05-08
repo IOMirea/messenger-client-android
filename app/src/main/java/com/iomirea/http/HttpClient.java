@@ -1,6 +1,7 @@
 package com.iomirea.http;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -44,12 +45,11 @@ public class HttpClient {
         String url = BASE_URL + "/channels/" + channel_id + "/messages/" + message_id;
 
         //Тестирование получения сообщения
-        Response.Listener listener = new Response.Listener() {
+        Response.Listener<Message> listener = new Response.Listener<Message>() {
             @Override
-            public void onResponse(Object response)
+            public void onResponse(Message response)
             {
-                Message message = (Message) response;
-                System.out.println(message);
+                System.out.println(response);
             }
         };
 
@@ -70,7 +70,7 @@ public class HttpClient {
     {
         String url = BASE_URL + "/bugreports";
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, null, body, null, null, token);
+        GenericRequest request = new GenericRequest<Nullable>(Request.Method.POST, url, null, body, null, null, token);
         queue.add(request);
     }
 }

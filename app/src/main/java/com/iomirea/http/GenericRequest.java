@@ -71,8 +71,7 @@ public final class GenericRequest<T> extends JsonRequest<T> {
     {
         if (requestHeaders == null) {
             return super.getHeaders();
-        }
-        else{
+        } else {
             return requestHeaders;
         }
     }
