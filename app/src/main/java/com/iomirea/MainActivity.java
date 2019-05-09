@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 // Avoid default action handler
                 return false;
             }});
+        logauth.setWebChromeClient(new WebChromeClient());
         WebSettings webSettings = logauth.getSettings();
         webSettings.setJavaScriptEnabled(true);
         logauth.loadUrl("https://iomirea.ml/api/oauth2/authorize?response_type=code&client_id=1&redirect_uri=iomirea1://oauth2redirect&scope=user");
