@@ -21,14 +21,13 @@ public final class Message extends APIObject {
         this.pinned = pinned;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
     public void setPinned(boolean pinned)
     {
         this.pinned = pinned;
-    }
-
-    String getAuthorName()
-    {
-        return author.getName();
     }
 
     public int getMessageLength()
@@ -41,19 +40,14 @@ public final class Message extends APIObject {
         this.content = content;
     }
 
-    Long getEditID()
+    public Long getEditID()
     {
         return edit_id;
     }
 
-    Long getChannelId()
+    public Long getChannelID()
     {
         return channel_id;
-    }
-
-    Long getAuthorId()
-    {
-        return author.getId();
     }
 
     public String getContent()

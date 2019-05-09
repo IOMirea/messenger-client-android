@@ -11,7 +11,7 @@ public abstract class APIObject {
         this.id = id;
     }
 
-    public Long getId() {
+    public Long getID() {
         return id;
     }
 

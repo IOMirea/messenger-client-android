@@ -1,13 +1,13 @@
 package com.iomirea.http;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
 import java.util.HashMap;
+
 
 public class HttpClient {
     private final String API_URL = "https://iomirea.ml/api/";
@@ -18,8 +18,7 @@ public class HttpClient {
 
     private RequestQueue queue;
 
-    public HttpClient(Context context, String token)
-    {
+    public HttpClient(Context context, String token) {
         this.queue = VolleyController.getInstance(context).getRequestQueue();
         this.token = token;
     }
@@ -28,49 +27,47 @@ public class HttpClient {
         this.token = token;
     }
 
-    public void send_message(Long channel_id, String content)
-    {
+    public void send_message(Long channel_id, String content, Response.Listener<Message> callback) {
         String url = BASE_URL + "/channels/" + channel_id + "/messages";
 
         HashMap<String, String> body = new HashMap<>();
         body.put("channel_id", channel_id.toString());
         body.put("content", content);
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Message.class, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Message.class, token, body, callback, null);
+
         queue.add(request);
     }
 
-    public void get_message(Long channel_id, Long message_id)
-    {
+    public void get_message(Long channel_id, Long message_id, Response.Listener<Message> callback) {
         String url = BASE_URL + "/channels/" + channel_id + "/messages/" + message_id;
 
-        //Тестирование получения сообщения
-        Response.Listener<Message> listener = new Response.Listener<Message>() {
-            @Override
-            public void onResponse(Message response)
-            {
-                System.out.println(response);
-            }
-        };
+        GenericRequest request = new GenericRequest<>(url, Message.class, token, callback, null);
 
-        GenericRequest<Message> request = new GenericRequest<>(url, Message.class, listener, null, token);
         queue.add(request);
     }
 
+    public void get_messages(Long channel_id, Response.Listener<Message[]> callback) {
+        String url = BASE_URL + "/channels/" + channel_id + "/messages";
 
-    public void create_channel(HashMap body)
-    {
+        GenericRequest request = new GenericRequest<>(url, Message[].class, token, callback, null);
+
+        queue.add(request);
+    }
+
+    public void create_channel(HashMap body, Response.Listener<Channel> callback) {
         String url = BASE_URL + "/channels";
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Channel.class, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Channel.class, token, body, callback, null);
+
         queue.add(request);
     }
 
-    public void send_bugreport(HashMap body)
-    {
+    public void send_bugreport(HashMap body, Response.Listener<BugReport> callback) {
         String url = BASE_URL + "/bugreports";
 
-        GenericRequest request = new GenericRequest<Nullable>(Request.Method.POST, url, null, body, null, null, token);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, null, token, body, callback, null);
+
         queue.add(request);
     }
 }

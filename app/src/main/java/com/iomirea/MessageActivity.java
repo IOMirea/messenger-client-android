@@ -19,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.iomirea.http.Message;
+
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
     LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
     BottomSheetDialog bottomSheetDialog;
@@ -40,11 +43,27 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         ListView messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(tempMessageAdapter);
 
+        Response.Listener<Message[]> callback = new Response.Listener<Message[]>() {
+            @Override
+            public void onResponse(Message[] messages) {
+                // Temp
+                Long MY_ID = 0L;
+
+                for (Message message : messages) {
+                    tempMessageAdapter.add(new TempMessage(message.getContent(), message.getAuthor().getID().equals(MY_ID)));
+                }
+            }
+        };
+
+        MainActivity.client.get_messages(0L, callback);
+
+        /*
         tempMessageAdapter.add(new TempMessage("Привет, слышал про новый мессенджер?", true));
         tempMessageAdapter.add(new TempMessage("Привет)", false));
         tempMessageAdapter.add(new TempMessage("Нет, но я уже очень хочу его скачать", false));
         tempMessageAdapter.add(new TempMessage("Так мы уже в нём переписываемся", true));
         tempMessageAdapter.add(new TempMessage("А", false));
+        */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,12 +84,23 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     inputField.setText("");
                     copyPositionForEditing = -1;
                 } else {
-                    MainActivity.client.send_message(0L, inputField.getText().toString());
+                    String toSend = message_trimmer(inputField.getText().toString());
 
-                    String sending = message_trimmer(inputField.getText().toString());
-                    if (sending.length() != 0) {
-                        tempMessageAdapter.add(new TempMessage(sending, true));
+                    if (toSend.length() == 0) {
+                        return;
                     }
+
+                    tempMessageAdapter.add(new TempMessage(toSend, true));
+
+                    Response.Listener<Message> callback = new Response.Listener<Message>() {
+                        @Override
+                        public void onResponse(Message message) {
+                            // Delivery successful, update message to confirmed
+                        }
+                    };
+
+                    MainActivity.client.send_message(0L, toSend, callback);
+
                     inputField.setText("");
                 }
             }

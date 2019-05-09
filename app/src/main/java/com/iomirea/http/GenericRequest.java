@@ -24,44 +24,45 @@ public final class GenericRequest<T> extends JsonRequest<T> {
 
     private boolean muteRequest = false;
 
-    private GenericRequest(int method, Class<T> classType, String url, String requestBody, Response.Listener<T> listener,
-                           Response.ErrorListener errorListener, String token) {
+    private GenericRequest(int method, Class<T> classType, String url, String token, String requestBody, Response.Listener<T> listener,
+                           Response.ErrorListener errorListener) {
         super(method, url, requestBody, listener,  errorListener);
         ClassType = classType;
 
         this.requestHeaders = new HashMap<>();
         this.requestHeaders.put("Authorization", token);
+        this.requestHeaders.put("User-Agent", "IOMirea-android-client 1");
     }
 
-    GenericRequest(int method, String url, Class<T> classType, Object toBeSent, Response.Listener<T> listener,
-                   Response.ErrorListener errorListener, String token) {
-        this(method, classType, url, new Gson().toJson(toBeSent), listener,
-                errorListener, token);
+    GenericRequest(int method, String url, Class<T> classType, String token, Object toBeSent, Response.Listener<T> listener,
+                   Response.ErrorListener errorListener) {
+        this(method, classType, url, token, new Gson().toJson(toBeSent), listener,
+                errorListener);
     }
 
-    GenericRequest(int method, String url, Class<T> classType, String requestBody, Response.Listener<T> listener,
-                   Response.ErrorListener errorListener, String token) {
-        this(method, classType, url, requestBody, listener,
-                errorListener, token);
+    GenericRequest(int method, String url, Class<T> classType, String token, String requestBody, Response.Listener<T> listener,
+                   Response.ErrorListener errorListener) {
+        this(method, classType, url, token, requestBody, listener,
+                errorListener);
     }
 
-    GenericRequest(String url, Class<T> classType, Response.Listener<T> listener,
-                   Response.ErrorListener errorListener, String token) {
-        this(Request.Method.GET, url, classType, "", listener, errorListener, token);
+    GenericRequest(String url, Class<T> classType, String token, Response.Listener<T> listener,
+                   Response.ErrorListener errorListener) {
+        this(Request.Method.GET, url, classType, token, "", listener, errorListener);
     }
 
-    public GenericRequest(int method, String url, Class<T> classType, Object toBeSent, Response.Listener<T> listener,
-                          Response.ErrorListener errorListener, boolean mute, String token) {
-        this(method, classType, url, new Gson().toJson(toBeSent), listener,
-                errorListener, token);
+    public GenericRequest(int method, String url, Class<T> classType, String token, Object toBeSent, Response.Listener<T> listener,
+                          Response.ErrorListener errorListener, boolean mute) {
+        this(method, classType, url, token, new Gson().toJson(toBeSent), listener,
+                errorListener);
         this.muteRequest = mute;
 
     }
 
-    public GenericRequest(int method, String url, Class<T> classType, String requestBody, Response.Listener<T> listener,
-                          Response.ErrorListener errorListener, boolean mute, String token) {
-        this(method, classType, url, requestBody, listener,
-                errorListener, token);
+    public GenericRequest(int method, String url, Class<T> classType, String token, String requestBody, Response.Listener<T> listener,
+                          Response.ErrorListener errorListener, boolean mute) {
+        this(method, classType, url, token, requestBody, listener,
+                errorListener);
         this.muteRequest = mute;
 
     }
