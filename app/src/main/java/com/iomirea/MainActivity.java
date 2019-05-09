@@ -1,6 +1,5 @@
 package com.iomirea;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -38,13 +36,13 @@ import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    /*BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context ctx, Intent intent) {
             Log.e("logger name", "something");
         }
-    };
+    };*/
 
     public static HttpClient client;
     public static State state;
@@ -133,18 +131,7 @@ public class MainActivity extends AppCompatActivity {
         client = new HttpClient(this, preferences.getString("token", ""));
         state = new State();
 
-        CallbackListener<User> cl = new CallbackListener<User>() {
-            @Override
-            public void callback(Callback<User> cb) {
-                if (cb.isSuccess()) {
-                    state.setMe(cb.getObj());
-                }
-
-                // TODO: Logout
-            }
-        };
-
-        client.identify(cl);
+        identify();
     }
 
     void getToken(final SharedPreferences preferences, final Uri uri){
@@ -159,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
                             preferences.edit().putString("token", access_token).apply();
                             client.setToken(access_token);
+                            identify();
 
                             Intent myapp_intent = new Intent(getApplicationContext(), ChatActivity.class);
                             startActivity(myapp_intent);
@@ -201,5 +189,20 @@ public class MainActivity extends AppCompatActivity {
         };
 
         VolleyController.getInstance(getApplicationContext()).addToRequestQueue(tokenRequest);
+    }
+
+    void identify() {
+        CallbackListener<User> cl = new CallbackListener<User>() {
+            @Override
+            public void callback(Callback<User> cb) {
+                if (cb.isSuccess()) {
+                    state.setMe(cb.getObj());
+                }
+
+                // TODO: Logout
+            }
+        };
+
+        client.identify(cl);
     }
 }

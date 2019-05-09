@@ -26,7 +26,7 @@ import com.iomirea.http.User;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
     private final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
-    private LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
+    private LinearLayout editLinearLayout;
     private BottomSheetDialog bottomSheetDialog;
     private int copyPosition, copyPositionForEditing = -1;
     private boolean editing = false;
@@ -177,8 +177,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private void createBottomSheetDialog() {
         if (bottomSheetDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet, null);
-            copyLinearLayout = view.findViewById(R.id.copyLinearLayout);
-            deleteLinearLayout = view.findViewById(R.id.deleteLinearLayout);
+            LinearLayout copyLinearLayout = view.findViewById(R.id.copyLinearLayout);
+            LinearLayout deleteLinearLayout = view.findViewById(R.id.deleteLinearLayout);
             editLinearLayout = view.findViewById(R.id.editLinearLayout);
 
             copyLinearLayout.setOnClickListener(this);
