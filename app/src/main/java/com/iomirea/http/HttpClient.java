@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 
 import java.util.HashMap;
 
@@ -27,54 +26,71 @@ public class HttpClient {
         this.token = token;
     }
 
-    public void send_message(Long channel_id, String content, Response.Listener<Message> callback) {
+    public void send_message(Long channel_id, String content, CallbackListener<Message> cl) {
         String url = BASE_URL + "/channels/" + channel_id + "/messages";
 
         HashMap<String, String> body = new HashMap<>();
         body.put("channel_id", channel_id.toString());
         body.put("content", content);
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Message.class, token, body, callback, null);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Message.class, token, body, cl);
 
         queue.add(request);
     }
 
-    public void get_message(Long channel_id, Long message_id, Response.Listener<Message> callback) {
+    public void get_message(Long channel_id, Long message_id, CallbackListener<Message> cl) {
         String url = BASE_URL + "/channels/" + channel_id + "/messages/" + message_id;
 
-        GenericRequest request = new GenericRequest<>(url, Message.class, token, callback, null);
+        GenericRequest request = new GenericRequest<>(url, Message.class, token, cl);
 
         queue.add(request);
     }
 
-    public void get_messages(Long channel_id, Response.Listener<Message[]> callback) {
+    public void get_messages(Long channel_id, Long offset, CallbackListener<Message[]> cl) {
         String url = BASE_URL + "/channels/" + channel_id + "/messages";
 
-        GenericRequest request = new GenericRequest<>(url, Message[].class, token, callback, null);
+        // TODO: support offset
+        GenericRequest request = new GenericRequest<>(url, Message[].class, token, cl);
 
         queue.add(request);
     }
 
-    public void create_channel(HashMap body, Response.Listener<Channel> callback) {
+    public void create_channel(HashMap body, CallbackListener<Channel> cl) {
         String url = BASE_URL + "/channels";
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Channel.class, token, body, callback, null);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, Channel.class, token, body, cl);
 
         queue.add(request);
     }
 
-    public void send_bugreport(HashMap body, Response.Listener<BugReport> callback) {
+    public void get_channel(Long channel_id, CallbackListener<Channel> cl) {
+        String url = BASE_URL + "/channels/" + channel_id;
+
+        GenericRequest request = new GenericRequest<>(url, Channel.class, token, cl);
+
+        queue.add(request);
+    }
+
+    public void get_channels(CallbackListener<Channel[]> cl) {
+        String url = BASE_URL + "/users/@me/channels";
+
+        GenericRequest request = new GenericRequest<>(url, Channel[].class, token, cl);
+
+        queue.add(request);
+    }
+
+    public void send_bugreport(HashMap body, CallbackListener<BugReport> cl) {
         String url = BASE_URL + "/bugreports";
 
-        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, null, token, body, callback, null);
+        GenericRequest request = new GenericRequest<>(Request.Method.POST, url, null, token, body, cl);
 
         queue.add(request);
     }
 
-    public void identify(Response.Listener<User> callback) {
+    public void identify(CallbackListener<User> cl) {
         String url = BASE_URL + "/users/@me";
 
-        GenericRequest request = new GenericRequest<>(url, User.class, token, callback, null);
+        GenericRequest request = new GenericRequest<>(url, User.class, token, cl);
 
         queue.add(request);
     }

@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.iomirea.http.Callback;
+import com.iomirea.http.CallbackListener;
 import com.iomirea.http.HttpClient;
 import com.iomirea.http.State;
 import com.iomirea.http.User;
@@ -131,14 +133,18 @@ public class MainActivity extends AppCompatActivity {
         client = new HttpClient(this, preferences.getString("token", ""));
         state = new State();
 
-        Response.Listener<User> callback = new Response.Listener<User>() {
+        CallbackListener<User> cl = new CallbackListener<User>() {
             @Override
-            public void onResponse(User user) {
-                state.setMe(user);
+            public void callback(Callback<User> cb) {
+                if (cb.isSuccess()) {
+                    state.setMe(cb.getObj());
+                }
+
+                // TODO: Logout
             }
         };
 
-        client.identify(callback);
+        client.identify(cl);
     }
 
     void getToken(final SharedPreferences preferences, final Uri uri){

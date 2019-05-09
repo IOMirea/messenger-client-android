@@ -19,16 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
+import com.iomirea.http.Callback;
+import com.iomirea.http.CallbackListener;
 import com.iomirea.http.Message;
+import com.iomirea.http.User;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
-    LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
-    BottomSheetDialog bottomSheetDialog;
-
-    int copyPosition, copyPositionForEditing = -1;
-    final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
-    boolean editing = false;
+    private final TempMessageAdapter tempMessageAdapter = new TempMessageAdapter(this);
+    private LinearLayout copyLinearLayout, deleteLinearLayout, editLinearLayout;
+    private BottomSheetDialog bottomSheetDialog;
+    private int copyPosition, copyPositionForEditing = -1;
+    private boolean editing = false;
+    private String typedText;  // saves user text while editing message
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +45,29 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         ListView messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(tempMessageAdapter);
 
-        Response.Listener<Message[]> callback = new Response.Listener<Message[]>() {
+        CallbackListener<Message[]> cl = new CallbackListener<Message[]>() {
             @Override
-            public void onResponse(Message[] messages) {
+            public void callback(Callback<Message[]> cb) {
+                if (!cb.isSuccess()) {
+                    Toast.makeText(getApplicationContext(), cb.getError().toString(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                User me = MainActivity.state.getMe();
+                if (me == null) {
+                    // TODO: Not identified, logout
+                    Toast.makeText(getApplicationContext(), "Not identified", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Long myID = MainActivity.state.getMe().getID();
 
-                for (Message message : messages) {
+                for (Message message : cb.getObj()) {
                     tempMessageAdapter.add(new TempMessage(message.getContent(), message.getAuthor().getID().equals(myID)));
                 }
             }
         };
 
-        MainActivity.client.get_messages(0L, callback);
+        MainActivity.client.get_messages(0L, 0L, cl);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,7 +85,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     tempMessageAdapter.editTextInMessage(copyPositionForEditing, inputField.getText().toString());
                     editing = false;
                     sendButton.setBackgroundResource(R.drawable.ic_send_black_24dp);
-                    inputField.setText("");
+                    inputField.setText(typedText);
                     copyPositionForEditing = -1;
                 } else {
                     String toSend = message_trimmer(inputField.getText().toString());
@@ -83,19 +96,26 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
                     tempMessageAdapter.add(new TempMessage(toSend, true));
 
-                    Response.Listener<Message> callback = new Response.Listener<Message>() {
+                    CallbackListener<Message> cl = new CallbackListener<Message>() {
                         @Override
-                        public void onResponse(Message message) {
-                            // Delivery successful, update message to confirmed
+                        public void callback(Callback<Message> cb) {
+                            if (!cb.isSuccess()) {
+                                // TODO: Delivery failed, mark message as failed
+
+                                return;
+                            }
+
+                            // TODO: Delivery successful, mark message as confirmed
                         }
                     };
 
-                    MainActivity.client.send_message(0L, toSend, callback);
+                    MainActivity.client.send_message(0L, toSend, cl);
 
                     inputField.setText("");
                 }
             }
         });
+
         sendButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -192,6 +212,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 sendButton.setBackgroundResource(R.drawable.ic_edit_black_24dp);
 
                 final EditText inputField = findViewById((R.id.message_textfield));
+                typedText = inputField.getText().toString();
                 inputField.setText(tempMessageAdapter.getTextFromMessage(copyPosition));
 
                 copyPositionForEditing = copyPosition;
