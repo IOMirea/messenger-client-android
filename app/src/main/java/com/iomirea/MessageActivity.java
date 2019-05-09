@@ -46,24 +46,15 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         Response.Listener<Message[]> callback = new Response.Listener<Message[]>() {
             @Override
             public void onResponse(Message[] messages) {
-                // Temp
-                Long MY_ID = 0L;
+                Long myID = MainActivity.state.getMe().getID();
 
                 for (Message message : messages) {
-                    tempMessageAdapter.add(new TempMessage(message.getContent(), message.getAuthor().getID().equals(MY_ID)));
+                    tempMessageAdapter.add(new TempMessage(message.getContent(), message.getAuthor().getID().equals(myID)));
                 }
             }
         };
 
         MainActivity.client.get_messages(0L, callback);
-
-        /*
-        tempMessageAdapter.add(new TempMessage("Привет, слышал про новый мессенджер?", true));
-        tempMessageAdapter.add(new TempMessage("Привет)", false));
-        tempMessageAdapter.add(new TempMessage("Нет, но я уже очень хочу его скачать", false));
-        tempMessageAdapter.add(new TempMessage("Так мы уже в нём переписываемся", true));
-        tempMessageAdapter.add(new TempMessage("А", false));
-        */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

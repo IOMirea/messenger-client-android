@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.iomirea.http.HttpClient;
 import com.iomirea.http.State;
+import com.iomirea.http.User;
 import com.iomirea.http.VolleyController;
 
 import org.json.JSONObject;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public static HttpClient client;
-    private State state;
+    public static State state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //        registerReceiver(broadcastReceiver, new IntentFilter("android.intent.action.VIEW"));
 
         final SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        if (preferences.getString("token", "null") != "null") {
+        if (!Objects.equals(preferences.getString("token", ""), "")) {
             Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intent);
             finish();
@@ -128,6 +130,15 @@ public class MainActivity extends AppCompatActivity {
 
         client = new HttpClient(this, preferences.getString("token", ""));
         state = new State();
+
+        Response.Listener<User> callback = new Response.Listener<User>() {
+            @Override
+            public void onResponse(User user) {
+                state.setMe(user);
+            }
+        };
+
+        client.identify(callback);
     }
 
     void getToken(final SharedPreferences preferences, final Uri uri){

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class State {
 
+    private User me;
+
     private ArrayList<Channel> channels;
 
     private ArrayList<Message> messages;
@@ -12,16 +14,15 @@ public class State {
 
     private ArrayList<File> files;
 
-    public State(ArrayList channels, ArrayList messages, ArrayList users, ArrayList files)
-    {
+    public State(User me, ArrayList<Channel> channels, ArrayList<Message> messages, ArrayList<User> users, ArrayList<File> files) {
+        this.me = me;
         this.channels = channels;
         this.messages = messages;
         this.users = users;
         this.files = files;
     }
 
-    public State()
-    {
+    public State() {
         this.channels = new ArrayList<Channel>();
         this.messages = new ArrayList<Message>();
         this.users = new ArrayList<User>();
@@ -126,23 +127,28 @@ public class State {
         return true;
     }
 
-    public ArrayList getChannels()
-    {
+    public User getMe() {
+        return me;
+    }
+
+    public void setMe(User me) {
+        this.me = me;
+    }
+
+    public ArrayList getChannels() {
         return channels;
     }
 
-    public ArrayList getMessages()
-    {
+    public ArrayList getMessages() {
         return messages;
+
     }
 
-    public ArrayList getUsers()
-    {
+    public ArrayList getUsers() {
         return users;
     }
 
-    public ArrayList getFiles()
-    {
+    public ArrayList getFiles() {
         return files;
     }
 }

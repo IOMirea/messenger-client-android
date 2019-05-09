@@ -70,4 +70,12 @@ public class HttpClient {
 
         queue.add(request);
     }
+
+    public void identify(Response.Listener<User> callback) {
+        String url = BASE_URL + "/users/@me";
+
+        GenericRequest request = new GenericRequest<>(url, User.class, token, callback, null);
+
+        queue.add(request);
+    }
 }
