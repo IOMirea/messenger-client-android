@@ -1,7 +1,8 @@
 package com.iomirea.http;
 
 public final class Message extends APIObject {
-    private Long edit_id, channel_id;
+    private String edit_id;
+    private String channel_id;
 
     private String content;
 
@@ -9,8 +10,8 @@ public final class Message extends APIObject {
 
     private boolean pinned;
 
-    public Message (Long id, Long edit_id, Long channel_id, String content,
-                    boolean pinned, User author)
+    public Message(String id, String edit_id, String channel_id, String content,
+                   boolean pinned, User author)
     {
         super(id);
 
@@ -42,12 +43,12 @@ public final class Message extends APIObject {
 
     public Long getEditID()
     {
-        return edit_id;
+        return Long.valueOf(edit_id);
     }
 
     public Long getChannelID()
     {
-        return channel_id;
+        return Long.valueOf(channel_id);
     }
 
     public String getContent()

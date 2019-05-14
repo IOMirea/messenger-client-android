@@ -5,7 +5,7 @@ public final class File extends APIObject {
 
     private String name;
 
-    public File(Long id, Long message_id, Long channel_id, String name)
+    public File(String id, Long message_id, Long channel_id, String name)
     {
         super(id);
 

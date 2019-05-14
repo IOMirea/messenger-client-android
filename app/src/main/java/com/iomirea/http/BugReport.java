@@ -1,7 +1,8 @@
 package com.iomirea.http;
 
 class BugReport extends APIObject {
-    BugReport(Long id) {
+    BugReport(String id) {
         super(id);
     }
 }
+

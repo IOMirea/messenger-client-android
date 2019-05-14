@@ -1,5 +1,7 @@
 package com.iomirea.http;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -89,13 +91,19 @@ public final class GenericRequest<T> extends JsonRequest<T> {
                 return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
             }
         } else {
+            String json = null;
             try {
-                String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            try {
                 T parsedObject = gson.fromJson(json, cls);
                 return Response.success(parsedObject, HttpHeaderParser.parseCacheHeaders(response));
-            } catch (UnsupportedEncodingException e) {
-                return Response.error(new ParseError(e));
+
             } catch (JsonSyntaxException e) {
+                Log.e("dadwa", json);
+                e.printStackTrace();
                 return Response.error(new ParseError(e));
             }
         }

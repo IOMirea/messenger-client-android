@@ -11,7 +11,7 @@ public final class Channel extends APIObject {
 
     private String name;
 
-    public Channel(Long id, String name, ArrayList<Long> user_ids, ArrayList<Long> pinned_ids, ArrayList<Message> messages)
+    public Channel(String id, String name, ArrayList<Long> user_ids, ArrayList<Long> pinned_ids, ArrayList<Message> messages)
     {
         super(id);
 

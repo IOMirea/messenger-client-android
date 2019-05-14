@@ -3,21 +3,21 @@ package com.iomirea.http;
 import java.util.Date;
 
 public abstract class APIObject {
+    protected String id;
 
-    protected Long id;
-
-    APIObject(long id)
+    APIObject(String id)
     {
+        // TODO: Figure out how to make Gson deserialize id as Long or switch to other library
         this.id = id;
     }
 
     public Long getID() {
-        return id;
+        return Long.valueOf(id);
     }
 
     public Long createTimestamp()
     {
-        return ((id >> 22) + 1546300800000L);
+        return ((getID() >> 22) + 1546300800000L);
     }
 
     public Date createDate()

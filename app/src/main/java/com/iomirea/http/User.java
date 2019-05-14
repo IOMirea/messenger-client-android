@@ -8,7 +8,7 @@ public final class User extends APIObject {
 
     private boolean bot;
 
-    public User (Long id, String name, boolean bot)
+    public User(String id, String name, boolean bot)
     {
         super(id);
 
@@ -16,7 +16,7 @@ public final class User extends APIObject {
         this.bot = bot;
     }
 
-    public User (Long id, String name)
+    public User(String id, String name)
     {
         super(id);
 
