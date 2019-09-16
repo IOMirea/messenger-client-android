@@ -12,8 +12,8 @@ This repository contains code related to android client.
 Current project website: https://iomirea.ml
 
 Other parts of the project can be found at:
-- https://github.com/IOMirea/IOMirea-server: server
-- https://github.com/IOMirea/IOMirea-client-android: Android client
+- https://github.com/IOMirea/messenger-api: server
+- https://github.com/IOMirea/messenger-client-android: Android client
 
 # IOMirea-server
 
